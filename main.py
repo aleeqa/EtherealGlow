@@ -10,11 +10,11 @@ def home():
 
 @app.route("/Login")
 def login():
-    return "This is login page."
+    return render_template("login.html")
 
 @app.route("/Logout")
 def logout():
-    return "This is logout page."
+    return redirect(url_for("login"))
 
 @app.route("/Signup")
 def signup():
