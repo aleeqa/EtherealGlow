@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name ="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+    </head>
+    
+    <body>
+
+        <div class="header"><h1>EtherealGlow ❀*̥˚</h1></div>
+        <input type="checkbox" class="toggle-Sidebar" id="toggle-Sidebar">
+        <label for="toggle-Sidebar" class="toggle-icon">
+            <div class="bar-top"></div>
+            <div class="bar-center"></div>
+            <div class="bar-bottom"></div>
+        </label>
+
+        <div class="sidebar">
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/Blog">Blog</a></li>
+                <li><a href="/AboutUs">AboutUs</a></li>
+                <li><a href="/Login">Login</a></li>
+                <li><a href="/Logout">Logout</a></li>
+                <li><a href="/Signup">Sign Up</a></li>
+                <li><a href="/Admin">Admin</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            {% block content%} {% endblock %}
+        </div>
+    </body>
+</html>
