@@ -105,6 +105,7 @@ ol {
     z-index: 9999;
     cursor: pointer;
     transition: all 0.3s;
+    position: fixed;
 }
 
 .bar-center {
