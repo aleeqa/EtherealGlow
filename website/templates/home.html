@@ -11,5 +11,15 @@
         <li class="list">Copy the ingredients deck and insert it in the field below.</li>
         <li class="list">Hit 'Check' and get the results.</li>
     </ol>
+
+    <h2 class="title">Skincare Analyzer Tool</h2>
+    <form action="/analyze" method="post">
+        <label for="ingredients">Enter ingredients:</label><br>
+        <textarea id="ingredients" name="ingredients" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2 class="title">Skincare Analysis Result</h2>
+    <p>{{ result }}</p>
 </div>
 {% endblock %}
