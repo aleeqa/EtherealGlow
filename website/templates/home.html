@@ -3,23 +3,25 @@
 
 {% block content %}
 <div>
-    <h2 class="title">Pore-Clogging Ingredients Checker</h2>
+    <h2 class="title">Pore-Clogging Ingredients Analyzer</h2>
     <p>This tool assists in identifying whether a product contains pore-clogging ingredients. Products containing comedogenic substances may clog pores, potentially exacerbating breakouts or worsening acne.</p>
-    <h3>To help you get clear,here's how you can determine whether the products are safe:</h3>
+    <h3>To help you get clear, here is how you can determine whether the products are safe:</h3>
     <ol>
         <li class="list">You should google the full name of your product and add 'ingredients' at the end. <br>For example: "Skintific Salicylic Acid Serum ingredients.</br></li>
         <li class="list">Copy the ingredients deck and insert it in the field below.</li>
         <li class="list">Hit 'Check' and get the results.</li>
     </ol>
-
-    <h2 class="title">Skincare Analyzer Tool</h2>
-    <form action="/analyze" method="post">
-        <label for="ingredients">Enter ingredients:</label><br>
-        <textarea id="ingredients" name="ingredients" rows="4" cols="50"></textarea><br><br>
-        <input type="submit" value="Submit">
-    </form>
-
-    <h2 class="title">Skincare Analysis Result</h2>
-    <p>{{ result }}</p>
+    
+    <div class="tool">
+        <h3>Analyzer Tool</h3>
+        <form action="/analyze" method="post">
+            <label for="ingredients">Enter ingredients:</label><br>
+            <textarea id="ingredients" name="ingredients" rows="8" cols="50"></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    
+    <h3>Skincare Analysis Result:</h3>
+    <p id="result">{{ result }}</p>
 </div>
 {% endblock %}
