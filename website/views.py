@@ -16,6 +16,10 @@ def blog():
 def home():
     return render_template("home.html")
 
+@views.route("/AboutUs") 
+def about():
+    return render_template("AboutUs.html")   
+
 @views.route("/analyze", methods=['POST'])
 def analyze():
     # to get the ingredients entered 
