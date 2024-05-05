@@ -174,11 +174,19 @@ comedogenic_ingredients = [ "Acetylated Lanolin",
 
 def analyzer_tool(ingredients):
     ingredients_lower = ingredients.lower()
+    comedogenic_detected = []
 
     for ingredient in comedogenic_ingredients:
+        #creates regular exp pattern for each ingredient/ re.escape() is used to ensure pattern match the literal string
         pattern = re.escape(ingredient.lower())
+        #search ingredient pattern within the input
         if re.search(r'\b' + pattern + r'\b', ingredients_lower) or re.search(pattern, ingredients_lower):
-            return "Oh NO! This product is comedogenic."
-        
+            comedogenic_detected.append(ingredient)
+
+    #display comedogenic ingredients found
+    if comedogenic_detected:
+        return "Oh NO! The following ingredients are comedogenic: {}".format(','.join(comedogenic_detected))       
+    
+    else:
     #when ingredient doesnt exist in comedogenic_ingredients
-    return "Yeay! This product is non-comedogenic."    
+        return "Yeay! None of the ingredients are comedogenic."    
