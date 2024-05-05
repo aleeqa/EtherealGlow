@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+
+{% block title %}EtherealGlow{% endblock %} 
+
+{% block content%}
+<h1 aligh = "center">Share your skin-journey here!</h1>
+
+<form method ="POST">
+    <textarea name="text" id="text" class="form-control"></textarea>
+    <br />
+    <div align = "center">
+        <button type="submit" class = "btn btn btn-primary">Post</button>
+    </div>
+    <br />
+    <div align = "center">
+        <a href=/Blog><button type="button" class = "btn btn btn-primary">back</button></a>
+    </div>
+</form>
+
+{% endblock %}
