@@ -14,6 +14,9 @@
     width: 100%;
     height: 60px;
     position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1; 
 }
 
 /*EtherealGlow*/
@@ -27,6 +30,17 @@ body {
     background: #f1e8e6;
     color: #f1e8e6;
 }
+/*.banner{
+    background-image: url('images/banner2.png'); 
+    margin-top: 60px;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}*/
 
 .title {
     text-align: center;
@@ -52,7 +66,7 @@ h3 {
     text-align: justify;
     width: 100%;
     height: 100%;
-    background: #f1e8e6;
+    /*background: #f1e8e6;*/
     float: left;
     padding: 80px;
     font-size: 17px;
