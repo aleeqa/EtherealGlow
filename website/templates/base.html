@@ -29,14 +29,18 @@
         <div class="sidebar">
             <ul class="menu">
                 <li><a href="/home">Home</a></li> 
-                    <li><a href="/Blog">Blog</a></li>             
+                <li><a href="/Blog">Blog</a></li> 
+                {% if user and user.is_authenticated %}            
                     <li><a href="/Logout">Logout</a></li>
+                {% else %}
                     <li><a href="/Login">Login</a></li>
                     <li><a href="/Signup">Sign Up</a></li>
-                    <li><a href="/aboutus">About Us</a></li>
-                    <li><a href="/admin">Admin</a></li>
+                {% endif %}
+                <li><a href="/aboutus">About Us</a></li>
+                <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
+        
         
 
 
