@@ -194,3 +194,8 @@ button .fa-solid{
     background: #e9f3ff;
 }
 
+.result-box{
+    max-height: 310px;
+    overflow-y: scroll;
+}
+
