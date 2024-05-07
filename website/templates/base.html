@@ -7,6 +7,7 @@
         <meta name ="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="/static/styles.css">
+        <script src="https://kit.fontawesome.com/142f41d2d1.js" crossorigin="anonymous"></script>       
     </head>
     
     <body>
@@ -35,7 +36,13 @@
         <div class="search box">
             <div class="row">
                 <input type="text" id="input-box" placeholder="Search anything" autocomplete="off">
-                <button>search</button>
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <div class="result-box">
+                <ul>
+                    <li>My Account</li>
+                    <li>About us</li>
+                </ul>
             </div>
         </div>
     
