@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template,request
 from flask_login import login_required, current_user
 from .models import Post, User
 from . import db
+from analyze import analyzer_tool
 
 views = Blueprint("views", __name__)
 
@@ -61,3 +63,12 @@ def posts(username) :
     
     posts = Post.query.filter_by(author=user.id).all()
     return render_template("posts.html", user=current_user, posts=posts, username=username)
+
+@views.route("/analyze", methods=['POST'])
+def analyze():
+    # to get the ingredients entered 
+    ingredients = request.form.get('ingredients')
+
+    # analyzing ingredients
+    result = analyzer_tool(ingredients)
+    return render_template('home.html', result=result) #render result in {{ result }} in home.html
