@@ -6,5 +6,5 @@ from wtforms.validators import DataRequired
 class InputForm(FlaskForm):
     text = TextAreaField('Feedback', validators=[DataRequired()])
     product_name = TextAreaField('Skincare Product', validators=[DataRequired()])
-    image = FileField('Upload Image', validators=[FileAllowed(['jpg', 'png'])])
+    image = FileField('Upload Image', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'pdf'])])
     submit = SubmitField('Submit')
