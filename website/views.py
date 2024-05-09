@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for
-from flask import Blueprint, render_template,request
+from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from .models import Post, User
+from .models import Post, User, Feedback
 from . import db
 from analyze import analyzer_tool
+from .forms import InputForm
+from werkzeug.utils import secure_filename
+import os
 
 views = Blueprint("views", __name__)
 
@@ -72,3 +74,31 @@ def analyze():
     # analyzing ingredients
     result = analyzer_tool(ingredients)
     return render_template('home.html', result=result) #render result in {{ result }} in home.html
+
+@views.route("/feedback", methods=['GET', 'POST'])
+@login_required
+def feedback():
+    form = InputForm()
+    if form.validate_on_submit():
+        product_name = form.product_name.data
+        text = form.text.data
+        image = form.image.data
+
+        if image:
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))  # Save image to a designated folder
+            feedback = Feedback(product_name= product_name, text=text, image=filename, user_id=current_user.id)
+        else:
+            feedback = Feedback(product_name= product_name, text=text, user_id=current_user.id)
+
+        db.session.add(feedback)
+        db.session.commit()
+        flash('Feedback submitted successfully!', category='success')
+        return redirect(url_for('views.display_feedbacks'))
+
+    return render_template('feedback.html', user=current_user, form=form)
+
+@views.route("/display_feedbacks")
+def display_feedbacks():
+    feedbacks = Feedback.query.all()
+    return render_template('display_feedbacks.html', user=current_user, feedbacks=feedbacks)

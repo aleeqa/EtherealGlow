@@ -16,3 +16,11 @@ class Post(db.Model):
     text = db.Column(db.Text, nullable=False)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     author = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+
+class Feedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product_name = db.Column(db.Text, nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(255))  
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now()) 

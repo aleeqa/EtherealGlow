@@ -8,11 +8,13 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 DB_NAME = "database.db"
 
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "helloworld"
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-   
+    app.config['UPLOAD_FOLDER'] = 'C:\\Users\\12211\\Documents\\Mini It Project\\EtherealGlow\\website\\static\\uploads'
+
     db.init_app(app)
     bcrypt.init_app(app)
 

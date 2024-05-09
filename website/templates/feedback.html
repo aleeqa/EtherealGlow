@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Leave a Feedback{% endblock %}
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+{% block content %}
+<h2>Leave a Feedback</h2>
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    {{ form.product_name.label }}<br>
+    {{ form.product_name(class="form-control") }}
+  </div>
+
+  <div class="form-group">
+    {{ form.text.label }}<br>
+    {{ form.text(class="form-control") }}
+  </div>
+
+  <div class="form-group">
+    {{ form.image.label }}<br>
+    {{ form.image(class="form-control-file") }}
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

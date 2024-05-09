@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}View Feedbacks{% endblock %}
+
+{% block content %}
+<h2>Feedbacks</h2>
+  {% for feedback in feedbacks %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5>{{ feedback.product_name }}</h5>
+        <p>{{ feedback.text }}</p>
+        {% if feedback.image %}
+          <img src="{{ url_for('static', filename='uploads/' + feedback.image) }}" class="img-fluid" alt="Feedback Image">
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
