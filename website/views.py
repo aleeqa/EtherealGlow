@@ -3,22 +3,21 @@ from flask_login import login_required, current_user
 from .models import Post, User, Feedback
 from . import db
 from analyze import analyzer_tool
-from .forms import InputForm
 from werkzeug.utils import secure_filename
 import os
 
 views = Blueprint("views", __name__)
+
+@views.route("/")
+@views.route("/home")
+def home():
+    return render_template("home.html")
 
 @views.route("/Blog")
 @login_required 
 def blog():    
     posts = Post.query.all()
     return render_template("blog.html", user=current_user, posts = posts)
-
-@views.route("/")
-@views.route("/home")
-def home():
-    return render_template("home.html")
 
 @views.route("/create_post", methods=['GET', 'POST'])
 @login_required
@@ -75,28 +74,38 @@ def analyze():
     result = analyzer_tool(ingredients)
     return render_template('home.html', result=result) #render result in {{ result }} in home.html
 
+
+ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
+
+def allowed_file(filename):
+    return '.' in filename  and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @views.route("/feedback", methods=['GET', 'POST'])
 @login_required
 def feedback():
-    form = InputForm()
-    if form.validate_on_submit():
-        product_name = form.product_name.data
-        text = form.text.data
-        image = form.image.data
+    if request.method == "POST":
+        product_name = request.form.get('product_name')
+        text = request.form.get('text')
+        image = request.files.get('image')
 
-        if image:
+        if image and allowed_file(image.filename):
             filename = secure_filename(image.filename)
-            image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))  # Save image to a designated folder
-            feedback = Feedback(product_name= product_name, text=text, image=filename, user_id=current_user.id)
+            image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            feedback = Feedback(product_name=product_name, text=text, image=filename, user=current_user.id)
+
+        elif image and not allowed_file(image.filename):
+            flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
+            return redirect(request.url)
+        
         else:
-            feedback = Feedback(product_name= product_name, text=text, user_id=current_user.id)
+            feedback = Feedback(product_name=product_name, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
         flash('Feedback submitted successfully!', category='success')
         return redirect(url_for('views.display_feedbacks'))
-
-    return render_template('feedback.html', user=current_user, form=form)
+    
+    return render_template('feedback.html', user=current_user)
 
 @views.route("/display_feedbacks")
 def display_feedbacks():
