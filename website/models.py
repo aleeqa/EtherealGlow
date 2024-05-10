@@ -19,8 +19,8 @@ class Post(db.Model):
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    #user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     product_name = db.Column(db.Text, nullable=False)
     text = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(255))  
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+    image = db.Column(db.String(150))  
     date_created = db.Column(db.DateTime(timezone=True), default=func.now()) 

@@ -32,14 +32,14 @@
                 <li><a href="/Blog">Blog</a></li>
                 <li><a href="/display_feedbacks">View Feedbacks</a></li>
                 {% if user and user.is_authenticated %}            
-                    <li><a href="/Logout">Logout</a></li>
                     <li><a href="/feedback">Leave a Feedback</a></li>
+                    <li><a href="/Logout">Logout</a></li>
                 {% else %}
                     <li><a href="/Login">Login</a></li>
                     <li><a href="/Signup">Sign Up</a></li>
                 {% endif %}
-                <li><a href="/aboutus">About Us</a></li>
                 <li><a href="/admin">Admin</a></li>
+                <li><a href="/aboutus">About Us</a></li>
             </ul>
         </div>
         

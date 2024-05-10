@@ -73,9 +73,15 @@ ol {
     height: 100%;
     width: 20%;
     position: fixed;
-    margin-top: 40px;
+    margin-top: 36px;
     transform: translateX(-250px);
     transition: transform 250ms ease-in-out;
+    z-index: 1; 
+}
+
+.menu {
+    list-style: none; /* Remove bullets from the list items */
+    padding: 0; /* Remove default padding */
 }
 
 .menu li a {
