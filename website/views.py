@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback
+from .models import Post, User, Feedback, Comment
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
@@ -142,3 +142,22 @@ def feedbacks(username):
     
     feedbacks = user.feedbacks
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
+
+@views.route("/create-comment/<post_id>", methods=['POST'])
+@login_required
+def create_comment(post_id):
+    text = request.form.get('text')
+
+    if not text:
+        flash('Comment cannot be empty.', category='error')
+    else:
+        post = Post.query.filter_by(id=post_id)
+        if post:
+            comment = Comment(
+                text=text, author=current_user.id, post_id=post_id)
+            db.session.add(comment)
+            db.session.commit()
+        else:
+            flash('Post does not exist.', category='error')
+
+    return redirect(url_for("views.blog"))  
