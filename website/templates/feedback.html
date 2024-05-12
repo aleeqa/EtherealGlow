@@ -1,0 +1,26 @@
+{% extends "base.html" %} 
+
+{% block title %}Feedback{% endblock %} 
+
+{% block content %}
+<h1 class="title" align = "center">Leave a feedback here!</h1>
+
+<form method="post" action="/feedback" enctype="multipart/form-data">
+    <div align="center">
+        <label for="product_name">Skincare Product:</label><br>
+        <textarea id="product_name" name="product_name" class="form-control" required></textarea><br><br>
+
+        <label for="text">Feedback:</label><br>
+        <textarea id="text" name="text" class="form-control" required></textarea><br><br>
+        
+        <input type="file" name="image" autocomplete="off" ><br><br>
+
+        <button type="submit" class = "btn btn btn-primary">Submit</button>
+    </div>
+</form>
+<br>
+<div align = "center">
+    <a href=/display_feedbacks><button type="button" class = "btn btn btn-primary">Back</button></a>
+</div>
+
+{% endblock %}
