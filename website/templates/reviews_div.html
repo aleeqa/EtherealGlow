@@ -1,0 +1,37 @@
+{% extends "base.html"  %}
+{% block title %}{%endblock%}
+{% block content %}
+<h2 class="title">{% block header %}Skincare Feedbacks{% endblock %}</h2>
+<div id="feedbacks">
+    {% for feedback in feedbacks %}
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <a href="/feedbacks/{{feedback.author.username}}">{{feedback.author.username}}</a>
+                {% if user.id == feedback.user %}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown"></button>
+                    <ul class = "dropdown-menu">
+                        <li><a href="/delete-feedback/{{feedback.id}}" class="dropdown-item">Delete</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card-body">  
+                <h5>{{ feedback.product_name }}</h5>
+                <p>{{ feedback.text }}</p>
+                {% if feedback.image %}
+                <img src="{{ url_for('static', filename='uploads/' + feedback.image) }}" class="img-fluid" alt="Feedback Image">
+                {% endif %}
+            </div>
+
+            <div class="card-footer text-muted">{{feedback.date_created}}></div>
+        </div>        
+    {% endfor %}
+</div>
+{% block footer %}
+    <div align="center">
+        <a href="/feedback"><button type="button" class="btn btn-primary btn-lg">Leave a Feedback</button></a>
+    </div>
+{% endblock %}    
+{% endblock %}

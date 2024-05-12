@@ -6,13 +6,13 @@
         <meta charset="utf-8"/>
         <meta name ="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="/static/styles.css">
         <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
     </head>
     
     <body>
@@ -29,21 +29,23 @@
         <div class="sidebar">
             <ul class="menu">
                 <li><a href="/home">Home</a></li> 
-                <li><a href="/Blog">Blog</a></li> 
+                <li><a href="/Blog">Blog</a></li>
+                <li><a href="/display_feedbacks">View Feedbacks</a></li>
                 {% if user and user.is_authenticated %}            
+                    <li><a href="/feedback">Leave a Feedback</a></li>
                     <li><a href="/Logout">Logout</a></li>
                 {% else %}
                     <li><a href="/Login">Login</a></li>
                     <li><a href="/Signup">Sign Up</a></li>
                 {% endif %}
-                <li><a href="/aboutus">About Us</a></li>
                 <li><a href="/admin">Admin</a></li>
+                <li><a href="/aboutus">About Us</a></li>
             </ul>
         </div>
         
         
 
-
+        <div class="flash">
         {% with messages = get_flashed_messages(with_categories = True) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -57,12 +59,11 @@
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>  
-        {% endif %}
-
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-        
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
     
 
         <div class="content">

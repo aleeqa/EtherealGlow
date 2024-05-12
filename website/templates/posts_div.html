@@ -2,7 +2,7 @@
 {% block title %}{%endblock%}
 {%  block  content %}
 
-<h1 align="center">{% block header %}Posts{% endblock %}</h1>
+<h1 class="title" align="center">{% block header %}Posts{% endblock %}</h1>
 <br />
 <div id="posts">
     {% for post in posts %}
@@ -19,17 +19,17 @@
                 </ul>
             {%endif%}
             </div>
-        </div>
+            </div>
 
         <div class="card-body">
             <div class="card-text">{{post.text}}</div>
         </div>
 
         <div class="card-footer text-muted">{{post.date_created}}></div>
-    </div>
+        </div>
     <br />
     {%endfor %}
-    </div>
+</div>
 {% block footer %}
 <div align="center">
     <a href="/create_post"><button type="button" class="btn btn-primary btn">Create a Post</button></a>
