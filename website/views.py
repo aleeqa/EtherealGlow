@@ -65,6 +65,7 @@ def posts(username) :
     posts = Post.query.filter_by(author=user.id).all()
     return render_template("posts.html", user=current_user, posts=posts, username=username)
 
+#ANALYZER TOOL
 @views.route("/analyze", methods=['POST'])
 def analyze():
     # to get the ingredients entered 
@@ -74,7 +75,7 @@ def analyze():
     result = analyzer_tool(ingredients)
     return render_template('home.html', result=result) #render result in {{ result }} in home.html
 
-
+#FEEDBACK AND UPLOAD PICTURE
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
 
 def allowed_file(filename):
@@ -107,7 +108,37 @@ def feedback():
     
     return render_template('feedback.html', user=current_user)
 
+@views.route("/delete-feedback/<int:id>")
+@login_required
+def delete_feedback(id):
+    feedback = Feedback.query.filter_by(id=id).first()
+
+    if not feedback:
+        flash("Feedback does not exist.", category='error')
+
+    elif current_user.id != feedback.user :
+        flash('You do not have permission to delete this feedback.', category='error')
+
+    else:
+        db.session.delete(feedback)
+        db.session.commit()
+        flash('Feedback deleted.', category='success')
+
+    return redirect(url_for('views.display_feedbacks'))  
+          
 @views.route("/display_feedbacks")
 def display_feedbacks():
     feedbacks = Feedback.query.all()
     return render_template('display_feedbacks.html', user=current_user, feedbacks=feedbacks)
+
+@views.route("/feedbacks/<username>")
+@login_required
+def feedbacks(username):
+    user = User.query.filter_by(username=username).first()
+
+    if not user :
+        flash ("User is not exist.", category="error")
+        return redirect(url_for('views.display_feedbacks'))
+    
+    feedbacks = user.feedbacks
+    return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
