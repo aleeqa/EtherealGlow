@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback
+from .models import Post, User, Feedback, Comment
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
@@ -142,3 +142,37 @@ def feedbacks(username):
     
     feedbacks = user.feedbacks
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
+
+
+@views.route("/create-comment/<post_id>", methods=['POST'])
+@login_required
+def create_comment(post_id) :
+    text = request.form.get('text')
+
+    if not text :
+        flash('Comment cannot be empty.')
+    else : 
+        post = Post.query.filter_by(id=post_id).first()
+        if post :
+            comment = Comment(text=text, author=current_user.id, post_id=post_id)
+            db.session.add(comment)
+            db.session.commit()
+        else : 
+            flash('Post does not exists.', category='error')
+
+        return redirect(url_for('views.blog'))
+    
+@views.route('/delete-comment/<comment_id>')
+@login_required
+def delete_comment(comment_id) :
+    comment = Comment.query.filter_by(id=comment_id).first()
+
+    if not comment :
+        flash('Comment does not exists', category='error')
+    elif current_user.id != comment.author and current_user.id != comment.post.author:
+        flash('You do not have permission to delete this comment', category='error')
+    else :
+        db.session.delete(comment)
+        db.session.commit()
+
+    return redirect(url_for('views.blog'))
