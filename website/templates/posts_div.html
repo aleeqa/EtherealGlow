@@ -6,9 +6,11 @@
 
     <h1 align="center">{% block header %}Posts{% endblock %}</h1>
     <div id="posts">
+      <!--posting-->
       {% for post in posts %}
       <br />
       <div class="card border-dark">
+        <!--header-->
         <div class="card-header d-flex justify-content-between align-items-center">
           <a href="/posts/{{post.user.username}}">{{post.user.username}}</a>
           {% if user.id == post.author %}
@@ -24,10 +26,13 @@
               </li>
             </ul>
           </div>
+          <!-- end header-->
           {% endif %}
+          <!--body-->
         </div>
         <div class="card-body">
           <div class="card-text">{{post.text}}</div>
+          <p>Skin Type:<a href="/share/{{post.skintype}}">{{post.skintype}}</a></p>
           <br />
           <div class="collapse" id="comments-{{post.id}}">
             <div class="card">
@@ -65,6 +70,7 @@
               </div>
             </div>
           </div>
+          <!--comment-->
           <p class="card-text">
             {% if post.comments|length > 0 %}
             <a data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button">
@@ -89,12 +95,19 @@
             <button type="submit" class="btn btn-primary">Comment</button>
           </form>
         </div>
+        <!--end comment-->
+
+        
         <div class="card-footer text-muted">{{post.date_created}}</div>
       </div>
       <br /> {% endfor %}
     </div>
+    <!--end posting-->
+
+    <!--footer-->
     {% block footer %}
     <div align="center">
       <a href="/create_post"><button type="button" class="btn btn-primary btn">Create a Post</button></a>
   </div>
     {% endblock %} {% endblock %}
+    <!--end footer-->

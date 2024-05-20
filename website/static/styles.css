@@ -158,3 +158,12 @@ input[type="checkbox"]:checked ~ .toggle-icon > .bar-bottom {
 #ingredients {
     margin-top: 20px;
 }
+
+.radio-group {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.type {
+    margin-right: 10px;
+}

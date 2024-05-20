@@ -8,25 +8,29 @@ import os
 
 views = Blueprint("views", __name__)
 
+#HOME
 @views.route("/")
 @views.route("/home")
 def home():
     return render_template("home.html")
 
+#BLOG
 @views.route("/Blog")
 @login_required 
 def blog():    
     posts = Post.query.all()
     return render_template("blog.html", user=current_user, posts = posts)
 
+#CREATE POST
 @views.route("/create_post", methods=['GET', 'POST'])
 @login_required
 def create_post():
     if request.method == "POST":
         text = request.form.get('text')
+        skintype = request.form.get('skintype')
 
-        if text:
-            post = Post(text=text, author=current_user.id)
+        if text and skintype:
+            post = Post(text=text, skintype=skintype, author=current_user.id)
             db.session.add(post)
             db.session.commit()
             flash('Post created!', category='success')
@@ -36,6 +40,7 @@ def create_post():
           
     return render_template('create_post.html', user=current_user)
 
+#DELETE POST
 @views.route("/delete-post/<int:id>")
 @login_required
 def delete_post(id):
@@ -53,6 +58,7 @@ def delete_post(id):
 
     return redirect(url_for("views.blog"))  # Redirect even if there's an error
 
+#POST USERNAME
 @views.route("/posts/<username>")
 @login_required
 def posts(username) :
@@ -144,6 +150,7 @@ def feedbacks(username):
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
 
 
+#CREATE COMMENT
 @views.route("/create-comment/<post_id>", methods=['POST'])
 @login_required
 def create_comment(post_id) :
@@ -161,7 +168,8 @@ def create_comment(post_id) :
             flash('Post does not exists.', category='error')
 
         return redirect(url_for('views.blog'))
-    
+
+#DELETE COMMENT
 @views.route('/delete-comment/<comment_id>')
 @login_required
 def delete_comment(comment_id) :
@@ -176,3 +184,16 @@ def delete_comment(comment_id) :
         db.session.commit()
 
     return redirect(url_for('views.blog'))
+
+#SKINTYPE
+@views.route("/share/<skintype>")
+@login_required
+def share(skintype) :
+    user= User.query.filter_by(skintype=skintype).first
+
+    if not user :
+        flash('No user with that skintype exists', category='error')
+        return redirect(url_for(blog.html))
+
+    posts = Post.query.filter_by(skintype=skintype).all()
+    return render_template("skintype.html", user=current_user, posts=posts, skintype=skintype)

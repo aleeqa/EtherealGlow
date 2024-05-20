@@ -1,12 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 DB_NAME = "database.db"
+migrate = Migrate(db)
 
 
 def create_app():
@@ -17,6 +19,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = 'C:\\Users\\HP\\Documents\\Mini It Project\\EtherealGlow\\website\\static\\uploads'
 
     db.init_app(app)
+    migrate.init_app(app, db)
     bcrypt.init_app(app)
 
     from website.views import views
