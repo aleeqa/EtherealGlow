@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment
+from .models import Post, User, Feedback, Comment, Product
 from . import db
 from analyze import analyzer_tool
+from recommendation import recommendations
 from werkzeug.utils import secure_filename
 import os
 
@@ -197,3 +198,41 @@ def share(skintype) :
 
     posts = Post.query.filter_by(skintype=skintype).all()
     return render_template("skintype.html", user=current_user, posts=posts, skintype=skintype)
+
+#RECOMMENDATION
+@views.route('/recommendations', methods=['GET', 'POST'])
+def recommendations():
+    skintype = None  # Default value for skintype
+    product_types = []  # Default value for product_types
+
+    if request.method == 'POST':
+        skintype = request.form.get('skintype')
+        product_types = request.form.getlist('product_type')  # Get list of selected product types
+
+    # Predefined ingredient recommendations for different skin types
+    ingredient_recommendations = {
+        "normal": ["hyaluronic acid", "niacinamide"],
+        "dry": ["shea butter", "glycerin"],
+        "oily": ["salicylic acid", "tea tree oil"],
+        "combination": ["niacinamide", "retinol"],
+        "sensitive": ["aloe vera", "calendula"]
+    }
+
+    product_recommendations = {
+         "normal": ["hyaluronic acid", "niacinamide"],
+        "dry": ["shea butter", "glycerin"],
+        "oily": ["salicylic acid", "tea tree oil"],
+        "combination": ["niacinamide", "retinol"],
+        "sensitive": ["aloe vera", "calendula"]
+
+    }
+
+    # Fetch suitable ingredients based on skin type
+    suitable_ingredients = ingredient_recommendations.get(skintype, [])
+
+    # Fetch products based on selected product types
+    # Assuming Product objects have a product_type attribute
+    # Adjust this query according to your actual database schema
+    product_suggestions = Product.query.filter(Product.product_type.in_(product_types)).all()
+
+    return render_template('recommendation.html', ingredients=suitable_ingredients, products=product_suggestions)
