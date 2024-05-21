@@ -37,3 +37,9 @@ class Comment(db.Model) :
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
     author = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
+
+class Product(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
+    product_type = db.Column(db.String(150))
+    ingredients = db.Column(db.String(2000))
+    skintype = db.Column(db.String(20))
