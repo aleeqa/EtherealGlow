@@ -183,8 +183,8 @@ input[type=submit] {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    float: right;
     margin-inline: 5px;
+    display: inline-block;
 }
   
 /* Style the container */
