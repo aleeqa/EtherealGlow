@@ -3,30 +3,35 @@ from flask_login import login_required, current_user
 from .models import Post, User, Feedback, Comment, Product
 from . import db
 from analyze import analyzer_tool
+from recommendation import recommendations
 from werkzeug.utils import secure_filename
 import os
 
 views = Blueprint("views", __name__)
 
+#HOME
 @views.route("/")
 @views.route("/home")
 def home():
     return render_template("home.html")
 
+#BLOG
 @views.route("/Blog")
 @login_required 
 def blog():    
     posts = Post.query.all()
     return render_template("blog.html", user=current_user, posts = posts)
 
+#CREATE POST
 @views.route("/create_post", methods=['GET', 'POST'])
 @login_required
 def create_post():
     if request.method == "POST":
         text = request.form.get('text')
+        skintype = request.form.get('skintype')
 
-        if text:
-            post = Post(text=text, author=current_user.id)
+        if text and skintype:
+            post = Post(text=text, skintype=skintype, author=current_user.id)
             db.session.add(post)
             db.session.commit()
             flash('Post created!', category='success')
@@ -36,6 +41,7 @@ def create_post():
           
     return render_template('create_post.html', user=current_user)
 
+#DELETE POST
 @views.route("/delete-post/<int:id>")
 @login_required
 def delete_post(id):
@@ -53,6 +59,7 @@ def delete_post(id):
 
     return redirect(url_for("views.blog"))  # Redirect even if there's an error
 
+#POST USERNAME
 @views.route("/posts/<username>")
 @login_required
 def posts(username) :
@@ -144,6 +151,7 @@ def feedbacks(username):
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
 
 
+#CREATE COMMENT
 @views.route("/create-comment/<post_id>", methods=['POST'])
 @login_required
 def create_comment(post_id) :
@@ -161,7 +169,8 @@ def create_comment(post_id) :
             flash('Post does not exists.', category='error')
 
         return redirect(url_for('views.blog'))
-    
+
+#DELETE COMMENT
 @views.route('/delete-comment/<comment_id>')
 @login_required
 def delete_comment(comment_id) :
@@ -177,6 +186,7 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
+<<<<<<< HEAD
 @views.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
@@ -197,3 +207,55 @@ def add_product():
     db.session.commit()
     flash('A new product was successfully saved into the database!', category='success')
     return redirect(url_for('views.home'))    
+=======
+#SKINTYPE
+@views.route("/share/<skintype>")
+@login_required
+def share(skintype) :
+    user= User.query.filter_by(skintype=skintype).first
+
+    if not user :
+        flash('No user with that skintype exists', category='error')
+        return redirect(url_for(blog.html))
+
+    posts = Post.query.filter_by(skintype=skintype).all()
+    return render_template("skintype.html", user=current_user, posts=posts, skintype=skintype)
+
+#RECOMMENDATION
+@views.route('/recommendations', methods=['GET', 'POST'])
+def recommendations():
+    skintype = None  # Default value for skintype
+    product_types = []  # Default value for product_types
+
+    if request.method == 'POST':
+        skintype = request.form.get('skintype')
+        product_types = request.form.getlist('product_type')  # Get list of selected product types
+
+    # Predefined ingredient recommendations for different skin types
+    ingredient_recommendations = {
+        "normal": ["hyaluronic acid", "niacinamide"],
+        "dry": ["shea butter", "glycerin"],
+        "oily": ["salicylic acid", "tea tree oil"],
+        "combination": ["niacinamide", "retinol"],
+        "sensitive": ["aloe vera", "calendula"]
+    }
+
+    product_recommendations = {
+         "normal": ["hyaluronic acid", "niacinamide"],
+        "dry": ["shea butter", "glycerin"],
+        "oily": ["salicylic acid", "tea tree oil"],
+        "combination": ["niacinamide", "retinol"],
+        "sensitive": ["aloe vera", "calendula"]
+
+    }
+
+    # Fetch suitable ingredients based on skin type
+    suitable_ingredients = ingredient_recommendations.get(skintype, [])
+
+    # Fetch products based on selected product types
+    # Assuming Product objects have a product_type attribute
+    # Adjust this query according to your actual database schema
+    product_suggestions = Product.query.filter(Product.product_type.in_(product_types)).all()
+
+    return render_template('recommendation.html', ingredients=suitable_ingredients, products=product_suggestions)
+>>>>>>> main
