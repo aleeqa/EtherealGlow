@@ -40,6 +40,14 @@ class Comment(db.Model) :
 
 class Product(db.Model) :
     id = db.Column(db.Integer, primary_key=True)
+    product_brand = db.Column(db.Text, nullable=False)
+    product_name = db.Column(db.Text, nullable=False)
+    product_category = db.Column(db.Text, nullable=False)
+    ingredients = db.Column(db.Text, nullable=False)
+    #image = db.Column(db.String(150), nullable=False)  
+    
+class Products(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
     product_type = db.Column(db.String(150))
     ingredients = db.Column(db.String(2000))
-    skintype = db.Column(db.String(20))
+    skintype = db.Column(db.Integer, db.ForeignKey('user.skintype', ondelete="CASCADE"), nullable=False)

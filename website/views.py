@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
+from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment, Product
+from .models import Post, User, Feedback, Comment, Product, Products
 from . import db
 from analyze import analyzer_tool
 from recommendation import recommendations
@@ -186,6 +186,27 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
+@views.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form['query']
+        results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).all()
+        return jsonify([{'product_brand': result.product_brand, 'product_name': result.product_name, 'product_category': result.product_category, 'ingredients': result.ingredients} for result in results])
+    
+
+@views.route('/add_product', methods=['POST'])
+def add_product():
+    product_name = request.form['product_name']
+    product_brand = request.form['product_brand']
+    product_category = request.form['product_category']
+    ingredients = request.form['ingredients']
+    #image = request.files['image']
+    product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, ingredients=ingredients)
+    db.session.add(product)
+    db.session.commit()
+    flash('A new product was successfully saved into the database!', category='success')
+    return redirect(url_for('views.home'))   
+ 
 #SKINTYPE
 @views.route("/share/<skintype>")
 @login_required
@@ -229,10 +250,9 @@ def recommendations():
 
     # Fetch suitable ingredients based on skin type
     suitable_ingredients = ingredient_recommendations.get(skintype, [])
+    
 
     # Fetch products based on selected product types
-    # Assuming Product objects have a product_type attribute
-    # Adjust this query according to your actual database schema
-    product_suggestions = Product.query.filter(Product.product_type.in_(product_types)).all()
+    product_suggestions = Products.query.filter(Products.product_type.in_(product_types)).all()
 
     return render_template('recommendation.html', ingredients=suitable_ingredients, products=product_suggestions)
