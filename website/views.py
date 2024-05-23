@@ -223,36 +223,5 @@ def share(skintype) :
 #RECOMMENDATION
 @views.route('/recommendations', methods=['GET', 'POST'])
 def recommendations():
-    skintype = None  # Default value for skintype
-    product_types = []  # Default value for product_types
-
-    if request.method == 'POST':
-        skintype = request.form.get('skintype')
-        product_types = request.form.getlist('product_type')  # Get list of selected product types
-
-    # Predefined ingredient recommendations for different skin types
-    ingredient_recommendations = {
-        "normal": ["hyaluronic acid", "niacinamide"],
-        "dry": ["shea butter", "glycerin"],
-        "oily": ["salicylic acid", "tea tree oil"],
-        "combination": ["niacinamide", "retinol"],
-        "sensitive": ["aloe vera", "calendula"]
-    }
-
-    product_recommendations = {
-         "normal": ["hyaluronic acid", "niacinamide"],
-        "dry": ["shea butter", "glycerin"],
-        "oily": ["salicylic acid", "tea tree oil"],
-        "combination": ["niacinamide", "retinol"],
-        "sensitive": ["aloe vera", "calendula"]
-
-    }
-
-    # Fetch suitable ingredients based on skin type
-    suitable_ingredients = ingredient_recommendations.get(skintype, [])
+    return render_template('recommendation.html')
     
-
-    # Fetch products based on selected product types
-    product_suggestions = Products.query.filter(Products.product_type.in_(product_types)).all()
-
-    return render_template('recommendation.html', ingredients=suitable_ingredients, products=product_suggestions)
