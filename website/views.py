@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment, Product
+from .models import Post, User, Feedback, Comment, Product, Products
 from . import db
 from analyze import analyzer_tool
 from recommendation import recommendations
@@ -186,7 +186,6 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
-<<<<<<< HEAD
 @views.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
@@ -206,8 +205,8 @@ def add_product():
     db.session.add(product)
     db.session.commit()
     flash('A new product was successfully saved into the database!', category='success')
-    return redirect(url_for('views.home'))    
-=======
+    return redirect(url_for('views.home'))   
+ 
 #SKINTYPE
 @views.route("/share/<skintype>")
 @login_required
@@ -251,11 +250,9 @@ def recommendations():
 
     # Fetch suitable ingredients based on skin type
     suitable_ingredients = ingredient_recommendations.get(skintype, [])
+    
 
     # Fetch products based on selected product types
-    # Assuming Product objects have a product_type attribute
-    # Adjust this query according to your actual database schema
-    product_suggestions = Product.query.filter(Product.product_type.in_(product_types)).all()
+    product_suggestions = Products.query.filter(Products.product_type.in_(product_types)).all()
 
     return render_template('recommendation.html', ingredients=suitable_ingredients, products=product_suggestions)
->>>>>>> main

@@ -159,7 +159,6 @@ input[type="checkbox"]:checked ~ .toggle-icon > .bar-bottom {
     margin-top: 20px;
 }
 
-<<<<<<< HEAD
 /* adding new product */
 input[type=text], select, textarea{
     width: 100%;
@@ -230,7 +229,8 @@ input[type=submit] {
 
 #ingredients {
     width: 80%;
-=======
+}
+
 .radio-group {
     display: block;
     margin-bottom: 5px;
@@ -238,5 +238,4 @@ input[type=submit] {
 
 .type {
     margin-right: 10px;
->>>>>>> main
 }
