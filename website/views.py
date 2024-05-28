@@ -177,9 +177,7 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
-#jasdev 
-
-
+    #jasdev 
 @views.route('/profile', methods=['GET', 'POST'])
 def user_profile():
     if request.method == 'POST':
@@ -190,7 +188,7 @@ def user_profile():
         bio = request.form['bio']
 
         user = User(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
-        db.session.add(user)
+        db.session.add(user_profile)
         db.session.commit()
         flash('User profile updated successfully!', 'success')
         return redirect(url_for('user_profile'))
@@ -198,12 +196,8 @@ def user_profile():
     user = User.query.first()  # Get the first user for simplicity
     return render_template('profile.html', user=user)
 
-class User(db.Model):
+class User_Profile(db.Model):
     # Define the User model here
 
-    def __repr__(self):
+    def repr(self):
       return f'<User {self.email}>'
-
-      #ai part
-
-    
