@@ -188,7 +188,7 @@ def user_profile():
         bio = request.form['bio']
 
         user = User(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
-        db.session.add(user_profile)
+        db.session.add(User_Profile)
         db.session.commit()
         flash('User profile updated successfully!', 'success')
         return redirect(url_for('user_profile'))
