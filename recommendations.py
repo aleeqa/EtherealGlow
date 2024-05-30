@@ -1,6 +1,7 @@
-recommendations = {
+
+'''recommendations = {
     "normal": {
-        "cleanser": ["Gentle Cleanser", "Foaming Cleanser"],
+        "cleanser": ["CeraVe Hydrating Facial Cleanser", "Aiken Hydrating and Soothing with Amino Acid Cleanser"],
         "toner": ["Balancing Toner", "Hydrating Toner"],
         "serum": ["Hydrating Serum", "Vitamin C Serum"],
         "essence": ["Moisturizing Essence", "Brightening Essence"],
@@ -39,4 +40,7 @@ recommendations = {
         "moisturizer": ["Hypoallergenic Moisturizer", "Soothing Cream"],
         "sunscreen": ["SPF 30 Sunscreen for Sensitive Skin", "Mineral Sunscreen"]
     }
-}
+        }
+
+def get_recommendations(skintype, product_category):
+   return recommendations.get(skintype, {}).get(product_category, [])'''

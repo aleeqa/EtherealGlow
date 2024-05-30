@@ -1,9 +1,8 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
+from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
 from .models import Post, User, Feedback, Comment, Product
 from . import db
 from analyze import analyzer_tool
-from recommendation import recommendations
 from werkzeug.utils import secure_filename
 import os
 
@@ -186,6 +185,27 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
+@views.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        query = request.form['query']
+        results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).all()
+        return jsonify([{'product_brand': result.product_brand, 'product_name': result.product_name, 'product_category': result.product_category, 'ingredients': result.ingredients} for result in results])
+    
+
+@views.route('/add_product', methods=['POST'])
+def add_product():
+    product_name = request.form['product_name']
+    product_brand = request.form['product_brand']
+    product_category = request.form['product_category']
+    ingredients = request.form['ingredients']
+    #image = request.files['image']
+    product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, ingredients=ingredients)
+    db.session.add(product)
+    db.session.commit()
+    flash('A new product was successfully saved into the database!', category='success')
+    return redirect(url_for('views.home'))   
+ 
 #SKINTYPE
 @views.route("/share/<skintype>")
 @login_required
@@ -201,38 +221,61 @@ def share(skintype) :
 
 #RECOMMENDATION
 @views.route('/recommendations', methods=['GET', 'POST'])
-def recommendations():
-    skintype = None  # Default value for skintype
-    product_types = []  # Default value for product_types
-
+def recommendation():
     if request.method == 'POST':
         skintype = request.form.get('skintype')
-        product_types = request.form.getlist('product_type')  # Get list of selected product types
+        product_category = request.form.get('product_category')
+        
+        # Get recommendations
+        suggestion = get_recommendations(skintype, product_category)
+        
+        return jsonify(suggestion=suggestion)
+    else:
+        return render_template('recommendation.html')
 
-    # Predefined ingredient recommendations for different skin types
-    ingredient_recommendations = {
-        "normal": ["hyaluronic acid", "niacinamide"],
-        "dry": ["shea butter", "glycerin"],
-        "oily": ["salicylic acid", "tea tree oil"],
-        "combination": ["niacinamide", "retinol"],
-        "sensitive": ["aloe vera", "calendula"]
+def get_recommendations(skintype, product_category):
+    recommendations = {
+        'normal': {
+            'cleanser': ['Normal Cleanser A', 'Normal Cleanser B'],
+            'toner': ['Normal Toner A', 'Normal Toner B'],
+            'serum': ['Normal Serum A', 'Normal Serum B'],
+            'essence': ['Normal Essence A', 'Normal Essence B'],
+            'moisturizer': ['Normal Moisturizer A', 'Normal Moisturizer B'],
+            'sunscreen': ['Normal Sunscreen A', 'Normal Sunscreen B']
+        },
+        'oily': {
+            'cleanser': ['Oily Cleanser A', 'Oily Cleanser B'],
+            'toner': ['Oily Toner A', 'Oily Toner B'],
+            'serum': ['Oily Serum A', 'Oily Serum B'],
+            'essence': ['Oily Essence A', 'Oily Essence B'],
+            'moisturizer': ['Oily Moisturizer A', 'Oily Moisturizer B'],
+            'sunscreen': ['Oily Sunscreen A', 'Oily Sunscreen B']
+        },
+        'dry': {
+            'cleanser': ['Dry Cleanser A', 'Dry Cleanser B'],
+            'toner': ['Dry Toner A', 'Dry Toner B'],
+            'serum': ['Dry Serum A', 'Dry Serum B'],
+            'essence': ['Dry Essence A', 'Dry Essence B'],
+            'moisturizer': ['Dry Moisturizer A', 'Dry Moisturizer B'],
+            'sunscreen': ['Dry Sunscreen A', 'Dry Sunscreen B']
+        },
+        'combination': {
+            'cleanser': ['Combination Cleanser A', 'Combination Cleanser B'],
+            'toner': ['Combination Toner A', 'Combination Toner B'],
+            'serum': ['Combination Serum A', 'Combination Serum B'],
+            'essence': ['Combination Essence A', 'Combination Essence B'],
+            'moisturizer': ['Combination Moisturizer A', 'Combination Moisturizer B'],
+            'sunscreen': ['Combination Sunscreen A', 'Combination Sunscreen B']
+        },
+        'sensitive': {
+            'cleanser': ['Sensitive Cleanser A', 'Sensitive Cleanser B'],
+            'toner': ['Sensitive Toner A', 'Sensitive Toner B'],
+            'serum': ['Sensitive Serum A', 'Sensitive Serum B'],
+            'essence': ['Sensitive Essence A', 'Sensitive Essence B'],
+            'moisturizer': ['Sensitive Moisturizer A', 'Sensitive Moisturizer B'],
+            'sunscreen': ['Sensitive Sunscreen A', 'Sensitive Sunscreen B']
+        }
     }
+    
+    return recommendations[skintype][product_category]
 
-    product_recommendations = {
-         "normal": ["hyaluronic acid", "niacinamide"],
-        "dry": ["shea butter", "glycerin"],
-        "oily": ["salicylic acid", "tea tree oil"],
-        "combination": ["niacinamide", "retinol"],
-        "sensitive": ["aloe vera", "calendula"]
-
-    }
-
-    # Fetch suitable ingredients based on skin type
-    suitable_ingredients = ingredient_recommendations.get(skintype, [])
-
-    # Fetch products based on selected product types
-    # Assuming Product objects have a product_type attribute
-    # Adjust this query according to your actual database schema
-    product_suggestions = Product.query.filter(Product.product_type.in_(product_types)).all()
-
-    return render_template('recommendation.html', ingredients=suitable_ingredients, products=product_suggestions)

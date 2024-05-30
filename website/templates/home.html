@@ -12,17 +12,103 @@
         <li class="list">Copy the ingredients deck and insert it in the field below.</li>
         <li class="list">Hit 'Check' and get the results.</li>
     </ol>
-    
-    <div class="tool">
-        <h3>Analyzer Tool</h3>
-        <form action="/analyze" method="post">
-            <label for="ingredients">Enter ingredients:</label><br>
-            <textarea id="ingredients" name="ingredients" rows="8" cols="50"></textarea><br><br>
-            <input type="submit" value="Submit">
+
+    <h3>Skincare Product</h3>
+    <input type="text" id="search-input" placeholder="Search for a product...">
+    <input type="submit" id="search-btn" value="Search">
+    <input type="submit" id="clear-btn" value="Clear">
+    <div id="search-results"></div>
+
+ 
+    <div id="add-product-form" style="display: none;">
+        <h3>Fill in the details</h3>
+        <form id="product-form" action="/add_product" method="post">
+            <div class="row">
+                <div class="col-25">
+                    <label for="product_brand">Product Brand:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="product_brand" name="product_brand" placeholder="Product brand.." required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="product_name">Product Name:</label>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="product_name" name="product_name" placeholder="Product name.." required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="product_category">Product Category:</label>
+                </div>
+                <div class="col-75">
+                    <select id="product_category" name="product_category" required>
+                    <option value="">Select Product Category...</option>
+                    <option value="Cleanser">Cleanser</option>
+                    <option value="Toner">Toner</option>
+                    <option value="Essence">Essence</option>
+                    <option value="Serum">Serum</option>
+                    <option value="Moisturizer">Moisturizer</option>
+                    <option value="Sunscreen">Sunscreen</option>
+                    </select>
+                </div>
+            </div>
+            <!--try-->
+            <div class="row">
+                <div class="col-25">
+                    <label for="SkinType">Skin Type:</label>
+                </div>
+                <div class="col-75">
+                    <select id="SkinType" name="SkinType" required>
+                    <option value="">Select Skin Type...</option>
+                    <option value="Combination">Combination</option>
+                    <option value="Dry">Dry</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Oily">Oily</option>
+                    <option value="Sensitive">Sensitive</option>
+                    </select>
+                </div>
+            </div>
+             <!--try-->
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="ingredients">Product Ingredients:</label>
+                </div>
+                <div class="col-75">
+                    <textarea id="ingredients" name="ingredients" placeholder="Product ingredients.." style="height:200px" required></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <input type="file" name="image">
+            </div><br>
+
+            <div>
+                <input type="submit" value="Submit">
+            </div>
         </form>
     </div>
-    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <h3>Analyzer Tool</h3>
+        <form action="/analyze" method="post">
+            <input type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients...">
+            <input type="submit" id="ingredients-submit-button" value="Submit">
+            <input type="submit" id="ingredients-clear-btn" value="Clear">
+        </form>
+
     <h3>Skincare Analysis Result:</h3>
-    <p id="result">{{ result }}</p>
+    <p id="analyzer-result">{{ result }}</p>
+
+
 </div>
+
+
 {% endblock %}
