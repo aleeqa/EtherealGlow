@@ -19,6 +19,22 @@ $(document).ready(function(){
         $(this).hide();
     });
 
+    $('#search-input').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: '/autocomplete',
+                method: 'POST',
+                data: { query: request.term },
+                success: function(data) {
+                    response(data.map(item => item.name));
+                },
+                error: function() {
+                    response([]);
+                }
+            });
+        }
+    });
+
     function searchProducts(query) {
         $.ajax({
             type: 'POST',
@@ -29,7 +45,17 @@ $(document).ready(function(){
                 resultsDiv.empty();
                 if (response.length > 0) {
                     $.each(response, function(index, result){
-                        resultsDiv.append('<p><strong>Product brand:</strong> ' + result.product_brand + '<br><strong>Product Name:</strong> ' + result.product_name + '<br><strong>Product Category:</strong> ' + result.product_category + '<br><strong>Product Ingredients:</strong> ' + result.ingredients +'</p>');
+                        var imageUrl = '/static/uploads/' + result.image;
+                        var resultHTML = '<div class="search-results">';
+                        resultHTML += '<img src="' + imageUrl + '">';
+                        resultHTML += '<div class="product-details">';
+                        resultHTML += '<p><strong>Product Brand:</strong> ' + result.product_brand + '</p>';
+                        resultHTML += '<p><strong>Product Name:</strong> ' + result.product_name + '</p>';
+                        resultHTML += '<p><strong>Product Category:</strong> ' + result.product_category + '</p>';
+                        resultHTML += '<p><strong>Product Ingredients:</strong> ' + result.ingredients +'</p>';
+                        resultHTML += '</div>';
+                        resultHTML += '</div>';
+                        resultsDiv.append(resultHTML);
                     });
                 } else {
                     resultsDiv.append('<br><p>The product does not exist. Please add product to obtain the result.</p>');
@@ -44,7 +70,7 @@ $(document).ready(function(){
 
     function showAddProductForm(productname) {
         $('#add-product-form').show();
-        // Prefill product name if available
+        // Prefill product name
         $('#product_name').val(productname);
     }
 

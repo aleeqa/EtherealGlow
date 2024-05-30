@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     feedbacks = db.relationship('Feedback', backref='author', passive_deletes=True)
     comments = db.relationship('Comment', backref='user', passive_deletes=True)
     skintype = db.Column(db.String(20), nullable=False)
-
+    products = db.relationship('Product', backref='author', passive_deletes=True)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,11 +40,12 @@ class Comment(db.Model) :
 
 class Product(db.Model) :
     id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     product_brand = db.Column(db.Text, nullable=False)
     product_name = db.Column(db.Text, nullable=False)
     product_category = db.Column(db.Text, nullable=False)
     ingredients = db.Column(db.Text, nullable=False)
-    #image = db.Column(db.String(150), nullable=False)  
+    image = db.Column(db.String(150))  
     
 class Products(db.Model) :
     id = db.Column(db.Integer, primary_key=True)
