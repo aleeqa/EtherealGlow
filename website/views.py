@@ -184,7 +184,7 @@ def ai():
     #jasdev 
 @views.route('/profile', methods=['GET', 'POST'])
 def user_profile():
-    if request.method == 'POST':
+    if request.method == 'POST':    
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
@@ -192,7 +192,7 @@ def user_profile():
         bio = request.form['bio']
 
         user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
-        db.session.add(User_Profile)
+        db.session.add(user_profile)
         db.session.commit()
         flash('User profile updated successfully!', 'success')
         return redirect(url_for('user_profile'))
