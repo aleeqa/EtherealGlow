@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment
+from .models import Post, User, Feedback, Comment, User_Profile
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
@@ -177,6 +177,10 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
+@views.route('/ai_chatbox')
+def ai():
+    return render_template("Ai.html")
+
     #jasdev 
 @views.route('/profile', methods=['GET', 'POST'])
 def user_profile():
@@ -187,7 +191,7 @@ def user_profile():
         phone = request.form['phone']
         bio = request.form['bio']
 
-        user = User(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
+        user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
         db.session.add(User_Profile)
         db.session.commit()
         flash('User profile updated successfully!', 'success')
@@ -196,8 +200,3 @@ def user_profile():
     user = User.query.first()  # Get the first user for simplicity
     return render_template('profile.html', user=user)
 
-class User_Profile(db.Model):
-    # Define the User model here
-
-    def repr(self):
-      return f'<User {self.email}>'
