@@ -185,7 +185,7 @@ def delete_comment(comment_id) :
         db.session.commit()
 
     return redirect(url_for('views.blog'))
-'''
+
 @views.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
@@ -206,7 +206,7 @@ def search():
             product_info['comedogenic'] = comedogenic_result
             search_results.append(product_info)
 
-        return jsonify(search_results)'''
+        return jsonify(search_results)
         
 @views.route('/autocomplete', methods=['POST'])
 def autocomplete():
