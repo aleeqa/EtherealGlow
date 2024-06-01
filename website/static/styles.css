@@ -256,6 +256,7 @@ input[type=submit] {
     padding: 20px;
     margin-bottom: 20px;
     background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 #search-results {
@@ -306,7 +307,6 @@ button .fa-solid {
     width: 600px;
     background: white;
     margin: 20px auto 0;
-    /*border-radius: 5px;*/
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
@@ -333,9 +333,15 @@ button .fa-solid {
     top: 45% !important; /* Adjust top position */
     transform: translateX(0%) !important; /* Move it back half of its width to center it */
     overflow-y: auto;
-    position: relative;
 }
 
 .ui-menu-item {
-    padding: 5px 10px; /* Adjust padding for menu items */
+    overflow-x: hidden;
+    padding: 5px 10px;
+}
+
+.ui-menu-item div.ui-state-active{
+    background-color: #f1e8e6;
+    border: none;
+    color: black;
 }

@@ -185,8 +185,8 @@ def analyzer_tool(ingredients):
 
     #display comedogenic ingredients found
     if comedogenic_detected:
-        return "Oh NO! The following ingredients are comedogenic: {}".format(','.join(comedogenic_detected))       
+        return "This product contains comedogenic ingredients such as {}".format(', '.join(comedogenic_detected))       
     
     else:
     #when ingredient doesnt exist in comedogenic_ingredients
-        return "Yeay! None of the ingredients are comedogenic."    
+        return "This product does not contain any ingredients that can clog pores."  
