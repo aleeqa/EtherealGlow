@@ -52,7 +52,8 @@ $(document).ready(function(){
                         resultHTML += '<p><strong>Product Brand:</strong> ' + result.product_brand + '</p>';
                         resultHTML += '<p><strong>Product Name:</strong> ' + result.product_name + '</p>';
                         resultHTML += '<p><strong>Product Category:</strong> ' + result.product_category + '</p>';
-                        resultHTML += '<p><strong>Product Ingredients:</strong> ' + result.ingredients +'</p>';
+                        resultHTML += '<p><strong>Product Ingredients:</strong> ' + result.product_ingredients +'</p>';
+                        resultHTML += '<p><strong>Comedogenic:</strong> ' + result.comedogenic + '</p>'; // Add comedogenic info
                         resultHTML += '</div>';
                         resultHTML += '</div>';
                         resultsDiv.append(resultHTML);

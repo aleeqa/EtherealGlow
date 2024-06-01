@@ -185,14 +185,29 @@ def delete_comment(comment_id) :
         db.session.commit()
 
     return redirect(url_for('views.blog'))
-
+'''
 @views.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
         query = request.form['query']
         results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).all()
-        return jsonify([{'product_brand': result.product_brand, 'product_name': result.product_name, 'product_category': result.product_category, 'ingredients': result.ingredients, 'image': result.image} for result in results])
-    
+        search_results = []
+
+        for result in results:
+            product_info = {
+                'product_brand': result.product_brand,
+                'product_name': result.product_name,
+                'product_category': result.product_category,
+                'product_ingredients': result.product_ingredients,
+                'image': result.image
+            }
+            # Analyze ingredients for comedogenicity
+            comedogenic_result = analyzer_tool(result.product_ingredients)
+            product_info['comedogenic'] = comedogenic_result
+            search_results.append(product_info)
+
+        return jsonify(search_results)'''
+        
 @views.route('/autocomplete', methods=['POST'])
 def autocomplete():
     query = request.form['query']
@@ -205,20 +220,20 @@ def add_product():
     product_name = request.form['product_name']
     product_brand = request.form['product_brand']
     product_category = request.form['product_category']
-    ingredients = request.form['ingredients']
+    product_ingredients = request.form['product_ingredients']
     image = request.files['image']
 
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
         image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, ingredients=ingredients, image=filename, user=current_user.id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, user=current_user.id)
 
     elif image and not allowed_file(image.filename):
         flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
         return redirect(request.url)
     
     else:
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, ingredients=ingredients, user=current_user.id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=current_user.id)
     
     db.session.add(product)
     db.session.commit()

@@ -44,7 +44,7 @@ class Product(db.Model) :
     product_brand = db.Column(db.Text, nullable=False)
     product_name = db.Column(db.Text, nullable=False)
     product_category = db.Column(db.Text, nullable=False)
-    ingredients = db.Column(db.Text, nullable=False)
+    product_ingredients = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(150))  
     
 class Products(db.Model) :
