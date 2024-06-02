@@ -229,13 +229,13 @@ input[type=submit] {
     clear: both;
 }
   
-/* Responsive layout */
+/* Responsive layout 
   @media screen and (max-width: 600px) {
     .col-25, .col-75, input[type=submit] {
       width: 100%;
       margin-top: 0;
     }
-}
+}*/
 #product_ingredients {
     background-color: white;
 }
@@ -325,13 +325,12 @@ button .fa-solid {
     width: 600px;
     max-height: 200px;
     background: white; 
-    /*border-radius: 5px;*/
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
     z-index: 1000;
     left: 24.1% !important;
-    margin: 15px !important; /* Reset margin */
-    top: 45% !important; /* Adjust top position */
-    transform: translateX(0%) !important; /* Move it back half of its width to center it */
+    margin: 15px !important; 
+    top: 45% !important;
+    transform: translateX(0%) !important; 
     overflow-y: auto;
 }
 

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    //search functionality
     $('#search-btn').click(function(){
         var query = $('#search-input').val();
         if (query.trim() !== '') {
@@ -74,6 +75,30 @@ $(document).ready(function(){
         // Prefill product name
         $('#product_name').val(productname);
     }
+
+    //analyzer tool 
+    $('#analyze-form').submit(function(event){
+        event.preventDefault();
+        
+        var ingredients = $('#ingredients').val().trim();
+        
+        if (ingredients === '') {
+            $('#analyzer-result').html('Please enter a list of skincare ingredients.');
+            return;
+        }
+        
+        $.ajax({
+            type: 'POST',
+            url: '/analyze',
+            data: { ingredients: ingredients },
+            success: function(response){
+                $('#analyzer-result').html(response.result);
+            },
+            error: function(){
+                console.error('Error analyzing ingredients.');
+            }
+        });
+    });
 
     $('#ingredients-clear-btn').click(function(){
         $('#ingredients').val('');

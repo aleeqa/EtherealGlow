@@ -75,12 +75,9 @@ def posts(username) :
 #ANALYZER TOOL
 @views.route("/analyze", methods=['POST'])
 def analyze():
-    # to get the ingredients entered 
     ingredients = request.form.get('ingredients')
-
-    # analyzing ingredients
     result = analyzer_tool(ingredients)
-    return render_template('home.html', result=result) #render result in {{ result }} in home.html
+    return jsonify({"result": result})
 
 #FEEDBACK AND UPLOAD PICTURE
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
@@ -186,6 +183,7 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
+#SEARCH PRODUCT
 @views.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':

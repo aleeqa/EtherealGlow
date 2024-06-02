@@ -10,7 +10,6 @@
         <div class="search-row">
             <input type="text" id="search-input" placeholder="Search for a product or brand" autocomplete="off">
             <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-            <!--<input type="submit" id="search-btn" value="Search">-->
             <input type="submit" id="clear-btn" value="Clear">
         </div>
     </div>
@@ -87,16 +86,17 @@
 
     <div class="analyzer-box">
         <div class="analyzer-row">
-            <form action="/analyze" method="post">
+            <form id="analyze-form" method="post" action="/analyze">
                 <input type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients">
                 <input type="submit" id="ingredients-submit-button" value="Check">
                 <input type="submit" id="ingredients-clear-btn" value="Clear">
             </form>
+           
         </div>
     </div>
 
     <h3>Skincare Analysis Result:</h3>
-    <p id="analyzer-result">{{ result }}</p>
+    <div id="analyzer-result"></div>
 
 
 </div>
