@@ -221,17 +221,22 @@ def add_product():
     product_ingredients = request.form['product_ingredients']
     image = request.files['image']
 
+    if current_user.is_authenticated:
+        user_id = current_user.id
+    else:
+        user_id = None
+
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
         image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, user=current_user.id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, user=user_id)
 
     elif image and not allowed_file(image.filename):
         flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
         return redirect(request.url)
     
     else:
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=current_user.id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=user_id)
     
     db.session.add(product)
     db.session.commit()
