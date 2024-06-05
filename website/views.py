@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment, Product, Products
+from .models import Post, User, Feedback, Comment, Product
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
