@@ -104,4 +104,67 @@ $(document).ready(function(){
         $('#ingredients').val('');
         $('#analyzer-result').empty();
     });
+
+     //feedback functionality
+     $('#search-feedback-btn').click(function(){
+        var query = $('#product_input').val();
+        if (query.trim() !== '') {
+            searchProductFeedbacks(query);
+        } else {
+            $('#feedback-results').empty().append('<p>Please enter the name of a product.</p>');
+        }
+    });
+
+    $('#search-feedback-btn').click(function(){
+        var query = $('#product_input').val();
+        searchProductFeedbacks(query);
+    });
+
+    $('#clear-feedback-btn').click(function(){
+        $('#product_input').val('');
+        $('#feedback-results').empty();
+    });
+
+    $('#product_input').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: '/autocomplete',
+                method: 'POST',
+                data: { query: request.term },
+                success: function(data) {
+                    response(data.map(item => item.name));
+                },
+                error: function() {
+                    response([]);
+                }
+            });
+        }
+    });
+
+    function searchProductFeedbacks(query) {
+        $.ajax({
+            type: 'POST',
+            url: '/searchfeedback',
+            data: { query: query },
+            success: function(response){
+                var resultsDiv = $('#feedback-results');
+                resultsDiv.empty();
+                if (response.length > 0) {
+                    $.each(response, function(index, result){
+                        var resultHTML = '<div class="product-feedback">';
+                        resultHTML += '<p>This product is already exist in the database and feel free to share your journey and feedbacks about ' + result.product_name + '.</p>';
+                        resultHTML += '</div>';
+                        resultHTML += '</div>';
+                        resultsDiv.append(resultHTML);
+                    });
+                } else {
+                    resultsDiv.append('<br><p>This product does not exist our database. You can still proceed to leave a feedback and share your journey about this product.</p>');
+                }
+            },
+            error: function(){
+                alert('Error searching for products.');
+            }
+        });
+    }
+
 });

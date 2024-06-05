@@ -89,21 +89,21 @@ def allowed_file(filename):
 @login_required
 def feedback():
     if request.method == "POST":
-        product_name = request.form.get('product_name')
+        product_input = request.form.get('product_input')
         text = request.form.get('text')
         image = request.files.get('image')
 
         if image and allowed_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            feedback = Feedback(product_name=product_name, text=text, image=filename, user=current_user.id)
+            feedback = Feedback(product_input=product_input, text=text, image=filename, user=current_user.id)
 
         elif image and not allowed_file(image.filename):
             flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
             return redirect(request.url)
         
         else:
-            feedback = Feedback(product_name=product_name, text=text, user=current_user.id)
+            feedback = Feedback(product_input=product_input, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
@@ -211,6 +211,21 @@ def autocomplete():
     query = request.form['query']
     results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).limit(10).all()
     return jsonify([{'name': result.product_name} for result in results])
+
+@views.route('/searchfeedback', methods=['GET', 'POST'])
+def searchFeedback():
+    if request.method == 'POST':
+        query = request.form['query']
+        results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).all()
+        search_results = []
+
+        for result in results:
+            product_info = {
+                'product_name': result.product_name,
+            }
+            search_results.append(product_info)
+
+        return jsonify(search_results)
     
 #ADD NEW PRODUCT
 @views.route('/add_product', methods=['POST'])

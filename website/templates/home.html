@@ -87,14 +87,16 @@
     <div class="analyzer-box">
         <div class="analyzer-row">
             <form id="analyze-form" method="post" action="/analyze">
-                <input type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients">
+                <textarea type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients"></textarea>
+                <div class="analyzer-button">
                 <input type="submit" id="ingredients-submit-button" value="Check">
                 <input type="submit" id="ingredients-clear-btn" value="Clear">
+                </div>
             </form>
            
         </div>
     </div>
-
+    <br>
     <h3>Skincare Analysis Result:</h3>
     <div id="analyzer-result"></div>
 
