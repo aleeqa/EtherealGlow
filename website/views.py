@@ -3,7 +3,6 @@ from flask_login import login_required, current_user
 from .models import Post, User, Feedback, Comment, Product, Products
 from . import db
 from analyze import analyzer_tool
-from recommendation import recommendations
 from werkzeug.utils import secure_filename
 import os
 
@@ -272,7 +271,17 @@ def share(skintype) :
     return render_template("skintype.html", user=current_user, posts=posts, skintype=skintype)
 
 #RECOMMENDATION
-@views.route('/recommendations', methods=['GET', 'POST'])
+@views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
-    return render_template('recommendation.html')
-   
+    if request.method == 'POST':
+        skintype = request.form['skintype']
+        product_category = request.form['product_category']
+
+        # Retrieve recommended products from the database based on skin type and product category
+        recommended_products = Product.query.filter(skintype == skintype,product_category == product_category).all()
+    else:
+        recommended_products = []
+
+    return render_template('recommendation.html', suggestions=recommended_products)
+
+
