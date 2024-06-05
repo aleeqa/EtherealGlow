@@ -6,22 +6,39 @@
 <h1 class="title" align = "center">Leave a feedback here!</h1>
 
 <form method="post" action="/feedback" enctype="multipart/form-data">
-    <div align="center">
-        <label for="product_name">Skincare Product:</label><br>
-        <textarea id="product_name" name="product_name" class="form-control" required></textarea><br><br>
+        <div class="search-box">
+            <div class="search-row">
+                <input type="text" id="product_input" name="product_input"  placeholder="Search for a product or brand" autocomplete="off" required>
+                <button id="search-feedback-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="submit" id="clear-feedback-btn" value="Clear">
+            </div>
+        </div>
 
-        <label for="text">Feedback:</label><br>
-        <textarea id="text" name="text" class="form-control" required></textarea><br><br>
+        <div id="feedback-results"></div>
         
-        <input type="file" name="image" autocomplete="off" ><br><br>
+        <div class="feedback-box">
+            <div class="feedback-row">
+                    <textarea type="text" id="feedback" name="text" class="form-control" placeholder="Leave a Feedback" required></textarea>
+                    <div class="feedback-button">
+                        <input type="file" name="image" autocomplete="off" >
+                        <input type="submit" value="Submit">
+                    </div>
+            </div>
+        </div>
 
-        <button type="submit" class = "btn btn btn-primary">Submit</button>
-    </div>
 </form>
+
+
 <br>
 <div align = "center">
     <a href=/display_feedbacks><button type="button" class = "btn btn btn-primary">Back</button></a>
     <a href=/recommendations><button type="button" class = "btn btn btn-primary">Recommendation</button></a>
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 {% endblock %}
