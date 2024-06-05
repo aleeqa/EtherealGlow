@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment, Product, Products
+from .models import Post, User, Feedback, Comment, Product
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
@@ -278,7 +278,7 @@ def recommendations():
         product_category = request.form['product_category']
 
         # Retrieve recommended products from the database based on skin type and product category
-        recommended_products = Product.query.filter(skintype == skintype,product_category == product_category).all()
+        recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
     else:
         recommended_products = []
 
