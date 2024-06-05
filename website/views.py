@@ -191,11 +191,16 @@ def user_profile():
         phone = request.form['phone']
         bio = request.form['bio']
 
-        user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
-        db.session.add(user_profile)
-        db.session.commit()
-        flash('User profile updated successfully!', 'success')
-        return redirect(url_for('user_profile'))
+        # Check if a user with this email already exists
+        existing_user = User_Profile.query.filter_by(email=email).first()
+        if existing_user:
+            flash('A user with this email already exists.', 'error')
+        else:
+            user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
+            db.session.add(user)
+            db.session.commit()
+            flash('User profile updated successfully!', 'success')
+            return redirect(url_for('views.user_profile'))
 
     user = User.query.first()  # Get the first user for simplicity
     return render_template('profile.html', user=user)
