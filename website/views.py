@@ -75,12 +75,9 @@ def posts(username) :
 #ANALYZER TOOL
 @views.route("/analyze", methods=['POST'])
 def analyze():
-    # to get the ingredients entered 
     ingredients = request.form.get('ingredients')
-
-    # analyzing ingredients
     result = analyzer_tool(ingredients)
-    return render_template('home.html', result=result) #render result in {{ result }} in home.html
+    return jsonify({"result": result})
 
 #FEEDBACK AND UPLOAD PICTURE
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg'])
@@ -92,21 +89,21 @@ def allowed_file(filename):
 @login_required
 def feedback():
     if request.method == "POST":
-        product_name = request.form.get('product_name')
+        product_input = request.form.get('product_input')
         text = request.form.get('text')
         image = request.files.get('image')
 
         if image and allowed_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            feedback = Feedback(product_name=product_name, text=text, image=filename, user=current_user.id)
+            feedback = Feedback(product_input=product_input, text=text, image=filename, user=current_user.id)
 
         elif image and not allowed_file(image.filename):
             flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
             return redirect(request.url)
         
         else:
-            feedback = Feedback(product_name=product_name, text=text, user=current_user.id)
+            feedback = Feedback(product_input=product_input, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
@@ -186,18 +183,49 @@ def delete_comment(comment_id) :
 
     return redirect(url_for('views.blog'))
 
+#SEARCH PRODUCT
 @views.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
         query = request.form['query']
         results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).all()
-        return jsonify([{'product_brand': result.product_brand, 'product_name': result.product_name, 'product_category': result.product_category, 'ingredients': result.ingredients, 'image': result.image} for result in results])
-    
+        search_results = []
+
+        for result in results:
+            product_info = {
+                'product_brand': result.product_brand,
+                'product_name': result.product_name,
+                'product_category': result.product_category,
+                'product_ingredients': result.product_ingredients,
+                'image': result.image
+            }
+            # Analyze ingredients for comedogenicity
+            comedogenic_result = analyzer_tool(result.product_ingredients)
+            product_info['comedogenic'] = comedogenic_result
+            search_results.append(product_info)
+
+        return jsonify(search_results)
+        
 @views.route('/autocomplete', methods=['POST'])
 def autocomplete():
     query = request.form['query']
     results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).limit(10).all()
     return jsonify([{'name': result.product_name} for result in results])
+
+@views.route('/searchfeedback', methods=['GET', 'POST'])
+def searchFeedback():
+    if request.method == 'POST':
+        query = request.form['query']
+        results = Product.query.filter(Product.product_name.ilike(f'%{query}%')).all()
+        search_results = []
+
+        for result in results:
+            product_info = {
+                'product_name': result.product_name,
+            }
+            search_results.append(product_info)
+
+        return jsonify(search_results)
     
 #ADD NEW PRODUCT
 @views.route('/add_product', methods=['POST'])
@@ -205,20 +233,25 @@ def add_product():
     product_name = request.form['product_name']
     product_brand = request.form['product_brand']
     product_category = request.form['product_category']
-    ingredients = request.form['ingredients']
+    product_ingredients = request.form['product_ingredients']
     image = request.files['image']
+
+    if current_user.is_authenticated:
+        user_id = current_user.id
+    else:
+        user_id = None
 
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
         image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, ingredients=ingredients, image=filename, user=current_user.id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, user=user_id)
 
     elif image and not allowed_file(image.filename):
         flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
         return redirect(request.url)
     
     else:
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, ingredients=ingredients, user=current_user.id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=user_id)
     
     db.session.add(product)
     db.session.commit()

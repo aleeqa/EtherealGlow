@@ -26,7 +26,7 @@ class Post(db.Model):
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
-    product_name = db.Column(db.Text, nullable=False)
+    product_input = db.Column(db.Integer, db.ForeignKey('product.product_name', ondelete="CASCADE"), nullable=False)
     text = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(150))  
     date_created = db.Column(db.DateTime(timezone=True), default=func.now()) 
@@ -44,8 +44,9 @@ class Product(db.Model) :
     product_brand = db.Column(db.Text, nullable=False)
     product_name = db.Column(db.Text, nullable=False)
     product_category = db.Column(db.Text, nullable=False)
-    ingredients = db.Column(db.Text, nullable=False)
+    product_ingredients = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(150))  
+    product_feedback = db.relationship('Feedback', backref='product', passive_deletes=True)
     
 class Products(db.Model) :
     id = db.Column(db.Integer, primary_key=True)

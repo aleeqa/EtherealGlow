@@ -18,7 +18,7 @@
             </div>
 
             <div class="card-body">  
-                <h5>{{ feedback.product_name }}</h5>
+                <h5>{{ feedback.product_input }}</h5>
                 <p>{{ feedback.text }}</p>
                 {% if feedback.image %}
                 <img src="{{ url_for('static', filename='uploads/' + feedback.image) }}" class="img-fluid" alt="Feedback Image">
