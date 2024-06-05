@@ -17,19 +17,19 @@
     <li>If your skin feels hydrated and comfortable, but not oily, you likely have <b>normal skin</b>.</li>
 </ul>
 
-<form id="recommendation-form">
+<form id="recommendation-form" method="POST" action="/recommendations">
     <!--dropdown menu for skin type-->
     <div>
         <label for="skintype">Select your skin type:</label><br />
-  <select id="skin_type" name="skin_type"> <!--dropdown-->
-    <option value="">Select your skin type..</option>
-    <option value="combination">Combination</option>
-    <option value="dry">Dry</option>
-    <option value="normal">Normal</option>
-    <option value="oily">Oily</option>
-    <option value="sensitive">Sensitive</option>
-  </select>
-  </div><br />
+        <select id="skintype" name="skintype"> <!--dropdown-->
+            <option value="">Select your skin type..</option>
+            <option value="combination">Combination</option>
+            <option value="dry">Dry</option>
+            <option value="normal">Normal</option>
+            <option value="oily">Oily</option>
+            <option value="sensitive">Sensitive</option>
+        </select>
+    </div><br />
 
     <!--dropdown menu for skincare product-->
     <div>
@@ -46,19 +46,35 @@
     </div><br />
 
     <div align="center">
-        <button type="button" class="btn btn-primary" id="get-recommendations">Get Recommendation</button>
+        <button type="submit" class="btn btn-primary">Get Recommendation</button>
     </div>
 </form>
 
-<!--result-->
+<!-- <div id="recommendation-results">
+    
+    <h3>Product recommendations:</h3>
+    <ul>
+        {% for product in suggestions %}
+            <li>{{ product.product_brand }} - {{ product.product_name }} - {{ product.product_category }} - {{ product.ingredients }} - {{ product.skintype }}</li>
+        {% endfor %}
+    </ul>
+</div> -->
 
-<div id="suggestion">
-    <h3>Product recommendation :</h3>
-    {{suggestion}}
+<div id="recommendation-results">
+    <!-- Recommendations will be displayed here dynamically -->
+    <h3>Product recommendations:</h3>
+    {% for product in suggestions %}
+        <br /> <div class="product-box">
+            <h4>{{ product.product_brand }}</h4>
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
+            {% endif %}
+            <p><strong>Product Name:</strong> {{ product.product_name }}</p>
+            <p><strong>Product Category:</strong> {{ product.product_category }}</p>
+            <p><strong>Skin Type:</strong> {{ product.skintype }}</p>
+            <p><strong>Ingredients:</strong> {{ product.ingredients }}</p>
+        </div>
+    {% endfor %}
 </div>
-<!-- end result-->
-
 
 {% endblock %}
-
-
