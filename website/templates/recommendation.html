@@ -1,62 +1,80 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
-{% block title %}EtherealGlow Blog{% endblock %} 
+{% block title %}EtherealGlow Blog{% endblock %}
 
-{% block content%}
-<h1 class="title" align = "center">Get your product recommendation here!</h1>
+{% block content %}
+<h1 class="title" align="center">Get your product recommendation here!</h1>
 
 <!--method-->
 <h2 id="method" align="center">Wait and Watch Method</h2>
 <h3>This home test allows you to understand your skin type by observing how your skin behaves after cleansing.</h3>
-<li>Wash your face with a gentle cleanser, then gently pat it dry.</li>
-<li>Wait 30 minutes.</ul>
-<li>If your skin appears shiny throughout, you likely have <b>oily skin</b>.</li>
-<li>If it feels tight and is flaky or scaly, you likely have <b>dry skin</b>.</li>
-<li>If the shine is only in your T-zone, you probably have <b>combination skin</b>.</li>
-<li>If your skin feels hydrated and comfortable, but not oily, you likely have <b>normal skin</b>.</li><br/>
-<!--end method-->
+<ul>
+    <li>Wash your face with a gentle cleanser, then gently pat it dry.</li>
+    <li>Wait 30 minutes.</li>
+    <li>If your skin appears shiny throughout, you likely have <b>oily skin</b>.</li>
+    <li>If it feels tight and is flaky or scaly, you likely have <b>dry skin</b>.</li>
+    <li>If the shine is only in your T-zone, you probably have <b>combination skin</b>.</li>
+    <li>If your skin feels hydrated and comfortable, but not oily, you likely have <b>normal skin</b>.</li>
+</ul>
 
-<form method="POST" action="/recommendation">
-<!--dropdown menu for skin type-->
-  <div>
-  <label for="skintype">Select your skin type:</label><br />
-  <select id="skin_type" name="skin_type"> <!--dropdown-->
-    <option value="">Select your skin type..</option>
-    <option value="combination">Combination</option>
-    <option value="dry">Dry</option>
-    <option value="normal">Normal</option>
-    <option value="oily">Oily</option>
-    <option value="sensitive">Sensitive</option>
-  </select>
-  </div><br />
-<!--end dropdown menu for skin type-->
+<form id="recommendation-form" method="POST" action="/recommendations">
+    <!--dropdown menu for skin type-->
+    <div>
+        <label for="skintype">Select your skin type:</label><br />
+        <select id="skintype" name="skintype"> <!--dropdown-->
+            <option value="">Select your skin type..</option>
+            <option value="combination">Combination</option>
+            <option value="dry">Dry</option>
+            <option value="normal">Normal</option>
+            <option value="oily">Oily</option>
+            <option value="sensitive">Sensitive</option>
+        </select>
+    </div><br />
 
-<!--dropdown menu for skincare product-->
-  <div>
-      <label for="product_category">Select skincare product you want :</label><br/>
-      <select id="product_category" name="product_category"> <!--dropdown-->
-    <option value="">Select a skincare product...</option>
-    <option value="cleanser">Cleanser</option>
-    <option value="toner">Toner</option>
-    <option value="serum">Serum</option>
-    <option value="essence">Essence</option>
-    <option value="moisturizer">Moisturizer</option>
-    <option value="sunscreen">Sunscreen</option>
-  </select>
-  </div><br />
-<!-- end dropdown menu for skincare product-->
+    <!--dropdown menu for skincare product-->
+    <div>
+        <label for="product_category">Select skincare product you want:</label><br />
+        <select id="product_category" name="product_category"> <!--dropdown-->
+            <option value="">Select a skincare product...</option>
+            <option value="cleanser">Cleanser</option>
+            <option value="toner">Toner</option>
+            <option value="serum">Serum</option>
+            <option value="essence">Essence</option>
+            <option value="moisturizer">Moisturizer</option>
+            <option value="sunscreen">Sunscreen</option>
+        </select>
+    </div><br />
 
-
-  <div align = "center">
-    <a href=/recommendations><button type="button" class = "btn btn btn-primary">submit</button></a>
-</div>
-
-<!--result-->
-<h3>Product recommendation :</h3>
-<p id="suggestion">{{ suggestion }}</p>
-<!-- end result-->
-
+    <div align="center">
+        <button type="submit" class="btn btn-primary">Get Recommendation</button>
+    </div>
 </form>
 
+<!-- <div id="recommendation-results">
+    
+    <h3>Product recommendations:</h3>
+    <ul>
+        {% for product in suggestions %}
+            <li>{{ product.product_brand }} - {{ product.product_name }} - {{ product.product_category }} - {{ product.ingredients }} - {{ product.skintype }}</li>
+        {% endfor %}
+    </ul>
+</div> -->
+
+<div id="recommendation-results">
+    <!-- Recommendations will be displayed here dynamically -->
+    <h3>Product recommendations:</h3>
+    {% for product in suggestions %}
+        <br /> <div class="product-box">
+            <h4>{{ product.product_brand }}</h4>
+            {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
+            {% endif %}
+            <p><strong>Product Name:</strong> {{ product.product_name }}</p>
+            <p><strong>Product Category:</strong> {{ product.product_category }}</p>
+            <p><strong>Skin Type:</strong> {{ product.skintype }}</p>
+            <p><strong>Ingredients:</strong> {{ product.ingredients }}</p>
+        </div>
+    {% endfor %}
 </div>
+
 {% endblock %}
