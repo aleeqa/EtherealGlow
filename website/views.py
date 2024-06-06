@@ -44,19 +44,19 @@ def create_post():
 @views.route("/delete-post/<int:id>")
 @login_required
 def delete_post(id):
-    post = Post.query.get(id)  # Use get() instead of filter_by(id=id).first() for simplicity
+    post = Post.query.get(id)  #use get() instead of filter_by(id=id).first() for simplicity
 
     if not post:
         flash("Post does not exist.", category='error')
-    elif current_user.id != post.author:  # Check if the current user is the author of the post
+    elif current_user.id != post.author:  #check if the current user is the author of the post
         flash("You do not have permission to delete this post.", category='error')
     else:
         db.session.delete(post)
         db.session.commit()
         flash('Post deleted!', category='success')
-        return redirect(url_for("views.blog"))  # Return after successfully deleting the post
+        return redirect(url_for("views.blog"))  #return after successfully deleting the post
 
-    return redirect(url_for("views.blog"))  # Redirect even if there's an error
+    return redirect(url_for("views.blog")) 
 
 #POST USERNAME
 @views.route("/posts/<username>")
@@ -227,13 +227,14 @@ def searchFeedback():
         return jsonify(search_results)
     
 #ADD NEW PRODUCT
-@views.route('/add_product', methods=['POST'])
+@views.route('/add_product', methods=['GET','POST'])
 def add_product():
     product_name = request.form['product_name']
     product_brand = request.form['product_brand']
     product_category = request.form['product_category']
     product_ingredients = request.form['product_ingredients']
     image = request.files['image']
+    skintype = request.form['skintype']
 
     if current_user.is_authenticated:
         user_id = current_user.id
@@ -250,7 +251,7 @@ def add_product():
         return redirect(request.url)
     
     else:
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=user_id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=user_id, skintype=skintype)
     
     db.session.add(product)
     db.session.commit()
@@ -277,11 +278,23 @@ def recommendations():
         skintype = request.form['skintype']
         product_category = request.form['product_category']
 
-        # Retrieve recommended products from the database based on skin type and product category
-        recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
+        #retrieve recommended products from the database based on skintype and product_category
+        recommended_products = Product.query.filter(skintype==skintype, product_category==product_category).all()
     else:
         recommended_products = []
 
     return render_template('recommendation.html', suggestions=recommended_products)
 
 
+'''@views.route('/recommendations', methods=['POST', 'GET'])
+def recommendations():
+    if request.method == 'POST':
+        skintype = request.form['skintype']
+        product_category = request.form['product_category']
+
+        #retrieve recommended products from the database based on skin type and product category
+        recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
+    else:
+        recommended_products = []
+
+    return render_template('recommendation.html', suggestions=recommended_products)'''
