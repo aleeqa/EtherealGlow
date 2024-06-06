@@ -5,30 +5,28 @@
 <div>
     <!-- <div class="banner"></div> -->
     <h2 class="title">Pore-Clogging Ingredients Analyzer</h2>
-    <p>This tool assists in identifying whether a product contains pore-clogging ingredients. Products containing comedogenic substances may clog pores, potentially exacerbating breakouts or worsening acne.</p>
-    <h3>To help you get clear, here is how you can determine whether the products are safe:</h3>
-    <ol>
-        <li class="list">You should google the full name of your product and add 'ingredients' at the end. <br>For example: "Skintific Salicylic Acid Serum ingredients.</br></li>
-        <li class="list">Copy the ingredients deck and insert it in the field below.</li>
-        <li class="list">Hit 'Check' and get the results.</li>
-    </ol>
+    
+    <div class="search-box">
+        <div class="search-row">
+            <input type="text" id="search-input" placeholder="Search for a product or brand" autocomplete="off">
+            <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="submit" id="clear-btn" value="Clear">
+        </div>
+    </div>
+    
 
-    <h3>Skincare Product</h3>
-    <input type="text" id="search-input" placeholder="Search for a product...">
-    <input type="submit" id="search-btn" value="Search">
-    <input type="submit" id="clear-btn" value="Clear">
     <div id="search-results"></div>
 
  
     <div id="add-product-form" style="display: none;">
         <h3>Fill in the details</h3>
-        <form id="product-form" action="/add_product" method="post">
+        <form id="product-form" action="/add_product" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-25">
                     <label for="product_brand">Product Brand:</label>
                 </div>
                 <div class="col-75">
-                    <input type="text" id="product_brand" name="product_brand" placeholder="Product brand.." required>
+                    <input type="text" id="product_brand" name="product_brand" placeholder="Product brand" required>
                 </div>
             </div>
 
@@ -37,7 +35,7 @@
                     <label for="product_name">Product Name:</label>
                 </div>
                 <div class="col-75">
-                    <input type="text" id="product_name" name="product_name" placeholder="Product name.." required>
+                    <input type="text" id="product_name" name="product_name" placeholder="Product name" required>
                 </div>
             </div>
 
@@ -47,6 +45,7 @@
                 </div>
                 <div class="col-75">
                     <select id="product_category" name="product_category" required>
+                    <option value="">Select your product...</option>
                     <option value="Cleanser">Cleanser</option>
                     <option value="Toner">Toner</option>
                     <option value="Essence">Essence</option>
@@ -59,10 +58,26 @@
 
             <div class="row">
                 <div class="col-25">
-                    <label for="ingredients">Product Ingredients:</label>
+                    <label for="skintype">Skin Type:</label>
                 </div>
                 <div class="col-75">
-                    <textarea id="ingredients" name="ingredients" placeholder="Product ingredients.." style="height:200px" required></textarea>
+                    <select id="skintype" name="skintype" required>
+                    <option value="">Select your skin type...</option>
+                    <option value="combination">Combination</option>
+                    <option value="normal">Normal</option>
+                    <option value="sensitive">Sensitive</option>
+                    <option value="oily">Oily</option>
+                    <option value="dry">Dry</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label for="product_ingredients">Product Ingredients:</label>
+                </div>
+                <div class="col-75">
+                    <textarea id="product_ingredients" name="product_ingredients" placeholder="Product ingredients" style="height:200px" required></textarea>
                 </div>
             </div>
 
@@ -77,17 +92,30 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    
+   
+    <h3 style="margin-top: 100px ;">Analyzer Tool</h3>
+    <p>This tool assists in identifying whether a product contains pore-clogging ingredients. Products containing comedogenic substances may clog pores, potentially exacerbating breakouts or worsening acne.</p>
 
-    <h3>Analyzer Tool</h3>
-        <form action="/analyze" method="post">
-            <input type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients...">
-            <input type="submit" id="ingredients-submit-button" value="Submit">
-            <input type="submit" id="ingredients-clear-btn" value="Clear">
-        </form>
-
+    <div class="analyzer-box">
+        <div class="analyzer-row">
+            <form id="analyze-form" method="post" action="/analyze">
+                <textarea type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients"></textarea>
+                <div class="analyzer-button">
+                <input type="submit" id="ingredients-submit-button" value="Check">
+                <input type="submit" id="ingredients-clear-btn" value="Clear">
+                </div>
+            </form>
+           
+        </div>
+    </div>
+    <br>
     <h3>Skincare Analysis Result:</h3>
-    <p id="analyzer-result">{{ result }}</p>
+    <div id="analyzer-result"></div>
 
 
 </div>
