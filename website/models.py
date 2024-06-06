@@ -46,6 +46,7 @@ class Product(db.Model) :
     product_name = db.Column(db.Text, nullable=False)
     product_category = db.Column(db.Text, nullable=False)
     product_ingredients = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(150))  
+    image = db.Column(db.String(150))
+    skintype = db.Column(db.Text, nullable=False)  
     product_feedback = db.relationship('Feedback', backref='product', passive_deletes=True)
 
