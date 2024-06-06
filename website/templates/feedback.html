@@ -18,6 +18,24 @@
         
         <div class="feedback-box">
             <div class="feedback-row">
+            <!--
+                <div class="row">
+                    <div class="col-25">
+                        <label for="product_category">Product Category:</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="product_category" name="product_category" required>
+                        <option value="">Select your product...</option>
+                        <option value="Cleanser">Cleanser</option>
+                        <option value="Toner">Toner</option>
+                        <option value="Essence">Essence</option>
+                        <option value="Serum">Serum</option>
+                        <option value="Moisturizer">Moisturizer</option>
+                        <option value="Sunscreen">Sunscreen</option>
+                        </select>
+                    </div>
+                </div>
+            -->
                     <textarea type="text" id="feedback" name="text" class="form-control" placeholder="Leave a Feedback" required></textarea>
                     <div class="feedback-button">
                         <input type="file" name="image" autocomplete="off" >
@@ -31,8 +49,8 @@
 
 <br>
 <div align = "center">
-    <a href=/display_feedbacks><button type="button" class = "btn btn btn-primary">Back</button></a>
-    <a href=/recommendations><button type="button" class = "btn btn btn-primary">Recommendation</button></a>
+    <a href=/display_feedbacks><input type="submit" value="Back"></a>
+    <a href=/recommendations><input type="submit" value="Recommendation"></a>
 </div>
 
 

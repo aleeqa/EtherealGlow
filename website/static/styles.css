@@ -360,18 +360,18 @@ button .fa-solid {
 
 .feedback-box {
     width: 600px;
-    height: 230px; /* Changed height to auto for dynamic content */
+    height: 230px; 
     background: white;
     margin: 30px auto 50px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-    padding: 15px; /* Added padding for inner content */
-    box-sizing: border-box; /* Ensures padding is included in the width */
+    padding: 15px; 
+    box-sizing: border-box; 
 }
 
 .feedback-row{
     display: flex;
-    flex-direction: column; /* Changed flex direction to column */
+    flex-direction: column;
     align-items: center;
 }
 
@@ -382,27 +382,32 @@ button .fa-solid {
 }
 
 #feedback {
-    width: 100%; /* Changed width to be responsive */
+    width: 100%; 
     height: 200px;
-    min-height: 100px; /* Set minimum height for textarea */
-    max-width: 100%; /* Ensures it doesn't overflow its container */
-    margin-bottom: 20px; /* Added margin bottom for spacing */
+    min-height: 100px; 
+    max-width: 100%; 
+    margin-bottom: 20px; 
     background: transparent;
     font-size: 14px;
     color: #333;  
-    border: 1px solid #ccc; /* Added border for clarity */
-    border-radius: 3px; /* Added border radius for aesthetics */
-    padding: 10px; /* Added padding for better appearance */
-    box-sizing: border-box; /* Ensures padding is included in the height */
+    border: 1px solid #ccc; 
+    border-radius: 3px; 
+    padding: 10px; 
+    box-sizing: border-box; 
 }
 
 .feedback-button input[type="file"] {
     margin-top: 10px;
-    margin-left: 25px; /* Added margin between file input and submit button */
+    margin-left: 25px;
 
 }
 
 .feedback-button input[type="submit"] {
-    margin-left: 1px; /* Added margin between file input and submit button */
+    margin-left: 1px; 
    
+}
+.card-body img {
+    max-width: 250px;
+    height: 250px;
+    margin-right: 10px;
 }

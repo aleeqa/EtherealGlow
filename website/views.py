@@ -89,6 +89,7 @@ def allowed_file(filename):
 def feedback():
     if request.method == "POST":
         product_input = request.form.get('product_input')
+        #product_category = request.form.get('product_category')
         text = request.form.get('text')
         image = request.files.get('image')
 
@@ -96,6 +97,7 @@ def feedback():
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
             feedback = Feedback(product_input=product_input, text=text, image=filename, user=current_user.id)
+            #feedback = Feedback(product_input=product_input, product_category=product_category, text=text, image=filename, user=current_user.id)
 
         elif image and not allowed_file(image.filename):
             flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
@@ -103,6 +105,7 @@ def feedback():
         
         else:
             feedback = Feedback(product_input=product_input, text=text, user=current_user.id)
+            #feedback = Feedback(product_input=product_input, product_category=product_category, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
@@ -244,14 +247,14 @@ def add_product():
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
         image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, user=user_id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, skintype=skintype, image=filename, user=user_id)
 
     elif image and not allowed_file(image.filename):
         flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
         return redirect(request.url)
     
     else:
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=user_id, skintype=skintype)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, skintype=skintype, user=user_id)
     
     db.session.add(product)
     db.session.commit()
