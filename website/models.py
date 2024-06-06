@@ -50,3 +50,10 @@ class Product(db.Model) :
     skintype = db.Column(db.Text, nullable=False)  
     product_feedback = db.relationship('Feedback', backref='product', passive_deletes=True)
 
+class User_Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(150), nullable=False)
+    last_name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    phone = db.Column(db.String(20), nullable=True)
+    bio = db.Column(db.Text, nullable=True)

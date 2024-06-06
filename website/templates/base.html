@@ -32,10 +32,12 @@
                 {% if user and user.is_authenticated %}            
                     <li><a href="/feedback">Leave a Feedback</a></li>
                     <li><a href="/Logout">Logout</a></li>
+                    <li><a href="/profile">My Profile</a></li>
                 {% else %}
                     <li><a href="/Login">Login</a></li>
                     <li><a href="/Signup">Sign Up</a></li>
                 {% endif %}
+                <li><a href="/ai_chatbox">Need Assistance</a></li>
                 <li><a href="/admin">Admin</a></li>
                 <li><a href="/aboutus">About Us</a></li>
             </ul>
@@ -73,4 +75,5 @@
       crossorigin="anonymous"
     ></script>
     </body>
+    
 </html>

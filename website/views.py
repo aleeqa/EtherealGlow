@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment, Product
+from .models import Post, User, Feedback, Comment, Product, User_Profile
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
@@ -298,3 +298,33 @@ def recommendations():
         recommended_products = []
 
     return render_template('recommendation.html', suggestions=recommended_products)'''
+
+#ai chatbox and my acccount 
+
+@views.route('/ai_chatbox')
+def ai():
+    return render_template("Ai.html")
+
+    #jasdev 
+@views.route('/profile', methods=['GET', 'POST'])
+def user_profile():
+    if request.method == 'POST':    
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        phone = request.form['phone']
+        bio = request.form['bio']
+
+        # Check if a user with this email already exists
+        existing_user = User_Profile.query.filter_by(email=email).first()
+        if existing_user:
+            flash('A user with this email already exists.', 'error')
+        else:
+            user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
+            db.session.add(user)
+            db.session.commit()
+            flash('User profile updated successfully!', 'success')
+            return redirect(url_for('views.user_profile'))
+
+    user = User.query.first()  # Get the first user for simplicity
+    return render_template('profile.html', user=user)
