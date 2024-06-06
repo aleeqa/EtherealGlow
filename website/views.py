@@ -89,20 +89,21 @@ def allowed_file(filename):
 def feedback():
     if request.method == "POST":
         product_input = request.form.get('product_input')
+        product_category = request.form.get('product_category')
         text = request.form.get('text')
         image = request.files.get('image')
 
         if image and allowed_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            feedback = Feedback(product_input=product_input, text=text, image=filename, user=current_user.id)
+            feedback = Feedback(product_input=product_input, product_category=product_category, text=text, image=filename, user=current_user.id)
 
         elif image and not allowed_file(image.filename):
             flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
             return redirect(request.url)
         
         else:
-            feedback = Feedback(product_input=product_input, text=text, user=current_user.id)
+            feedback = Feedback(product_input=product_input, product_category=product_category, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
@@ -145,6 +146,18 @@ def feedbacks(username):
     
     feedbacks = user.feedbacks
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
+
+@views.route("/productFeedbacks/<product_category>")
+@login_required
+def productFeedbacks(product_category):
+    product = Feedback.query.filter_by(product_category=product_category).first()
+
+    if not product :
+        flash ("Feedback does not exists.", category="error")
+        return redirect(url_for('views.display_feedbacks'))
+    
+    feedbacks = Feedback.query.filter_by(product_category=product_category).all()
+    return render_template("product_type_feedbacks.html",  user=current_user, feedbacks=feedbacks, product_category=product_category)
 
 
 #CREATE COMMENT

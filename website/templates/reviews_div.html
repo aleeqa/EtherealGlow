@@ -19,6 +19,7 @@
 
             <div class="card-body">  
                 <h5>{{ feedback.product_input }}</h5>
+                <a href="/productFeedbacks/{{feedback.product_category}}"><p>{{feedback.product_category}}</p></a>
                 <p>{{ feedback.text }}</p>
                 {% if feedback.image %}
                 <img src="{{ url_for('static', filename='uploads/' + feedback.image) }}" class="img-fluid" alt="Feedback Image">
@@ -31,7 +32,7 @@
 </div>
 {% block footer %}
     <div align="center">
-        <a href="/feedback"><button type="button" class="btn btn-primary btn-lg">Leave a Feedback</button></a>
+        <a href="/feedback"><input type="submit" value="Leave a Feedback"></a>
     </div>
 {% endblock %}    
 {% endblock %}

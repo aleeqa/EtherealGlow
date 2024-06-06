@@ -60,8 +60,8 @@ $(document).ready(function(){
                         resultsDiv.append(resultHTML);
                     });
                 } else {
-                    resultsDiv.append('<br><p>The product does not exist. Please add product to obtain the result.</p>');
-                    resultsDiv.append('<input type="submit" id="add-product-btn" value="Add Product">');
+                    resultsDiv.append('<br><p class="not-exist-result">The product does not exist. Please add product to obtain the result.</p>');
+                    resultsDiv.append('<p class="not-exist-result"><input type="submit" id="add-product-btn" value="Add Product"></p>');
                 }
             },
             error: function(){
