@@ -50,31 +50,27 @@
     </div>
 </form>
 
-<!-- <div id="recommendation-results">
-    
-    <h3>Product recommendations:</h3>
-    <ul>
-        {% for product in suggestions %}
-            <li>{{ product.product_brand }} - {{ product.product_name }} - {{ product.product_category }} - {{ product.ingredients }} - {{ product.skintype }}</li>
-        {% endfor %}
-    </ul>
-</div> -->
-
+<!--result-->
 <div id="recommendation-results">
-    <!-- Recommendations will be displayed here dynamically -->
     <h3>Product recommendations:</h3>
-    {% for product in suggestions %}
-        <br /> <div class="product-box">
-            <h4>{{ product.product_brand }}</h4>
-            {% if product.image_url %}
-                <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
-            {% endif %}
-            <p><strong>Product Name:</strong> {{ product.product_name }}</p>
-            <p><strong>Product Category:</strong> {{ product.product_category }}</p>
-            <p><strong>Skin Type:</strong> {{ product.skintype }}</p>
-            <p><strong>Ingredients:</strong> {{ product.ingredients }}</p>
-        </div>
-    {% endfor %}
+    {% if suggestions %}
+        {% for product in suggestions %}
+            <div class="product-box">
+                <h4>{{ product.product_brand }}</h4>
+                {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
+                {% endif %}
+                <p><strong>Product Name:</strong> {{ product.product_name }}</p>
+                <p><strong>Product Category:</strong> {{ product.product_category }}</p>
+                <p><strong>Skin Type:</strong> {{ product.skintype }}</p>
+                <p><strong>Ingredients:</strong> {{ product.product_ingredients }}</p>
+            </div>
+            <br />
+        {% endfor %}
+    {% else %}
+        <p>No recommendations found.</p>
+    {% endif %}
 </div>
+
 
 {% endblock %}
