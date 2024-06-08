@@ -3,25 +3,28 @@
 {% block title %}EtherealGlow Blog{% endblock %}
 
 {% block content %}
-<h1 class="title" align="center">Get your product recommendation here!</h1>
-
+<section class="recommendation" id="recommendation">
+    <div class="content">
+<h3>Get your product recommendation here!</h3>
+<br>
 <!--method-->
-<h2 id="method" align="center">Wait and Watch Method</h2>
-<h3>This home test allows you to understand your skin type by observing how your skin behaves after cleansing.</h3>
+<h3>Wait and Watch Method</h3>
+<br>
+<span>This home test allows you to understand your skin type by observing how your skin behaves after cleansing.</span>
 <ul>
-    <li>Wash your face with a gentle cleanser, then gently pat it dry.</li>
-    <li>Wait 30 minutes.</li>
-    <li>If your skin appears shiny throughout, you likely have <b>oily skin</b>.</li>
-    <li>If it feels tight and is flaky or scaly, you likely have <b>dry skin</b>.</li>
-    <li>If the shine is only in your T-zone, you probably have <b>combination skin</b>.</li>
-    <li>If your skin feels hydrated and comfortable, but not oily, you likely have <b>normal skin</b>.</li>
+    <li><p>Wash your face with a gentle cleanser, then gently pat it dry.</p></li>
+    <li><p>Wait 30 minutes.</p></li>
+    <li><p>If your skin appears shiny throughout, you likely have <b>oily skin</b>.</p></li>
+    <li><p>If it feels tight and is flaky or scaly, you likely have <b>dry skin</b>.</p></li>
+    <li><p>If the shine is only in your T-zone, you probably have <b>combination skin</b>.</p></li>
+    <li><p>If your skin feels hydrated and comfortable, but not oily, you likely have <b>normal skin</b>.</p></li>
 </ul>
 
 <form id="recommendation-form" method="POST" action="/recommendations">
     <!--dropdown menu for skin type-->
     <div>
         <label for="skintype">Select your skin type:</label><br />
-        <select id="skintype" name="skintype"> <!--dropdown-->
+        <select id="skintype" name="skintype" required> <!--dropdown-->
             <option value="">Select your skin type..</option>
             <option value="combination">Combination</option>
             <option value="dry">Dry</option>
@@ -34,7 +37,7 @@
     <!--dropdown menu for skincare product-->
     <div>
         <label for="product_category">Select skincare product you want:</label><br />
-        <select id="product_category" name="product_category"> <!--dropdown-->
+        <select id="product_category" name="product_category" required> <!--dropdown-->
             <option value="">Select a skincare product...</option>
             <option value="cleanser">Cleanser</option>
             <option value="toner">Toner</option>
@@ -46,10 +49,10 @@
     </div><br />
 
     <div align="center">
-        <button type="submit" class="btn btn-primary">Get Recommendation</button>
+        <input type="submit" value="Get Recommendation">
     </div>
 </form>
-
+<br><br>
 <!--result-->
 <div id="recommendation-results">
     <h3>Product recommendations:</h3>
@@ -57,9 +60,9 @@
         {% for product in suggestions %}
             <div class="product-box">
                 <h4>{{ product.product_brand }}</h4>
-                {% if product.image_url %}
+               <!-- {% if product.image_url %}
                     <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
-                {% endif %}
+                {% endif %} -->
                 <p><strong>Product Name:</strong> {{ product.product_name }}</p>
                 <p><strong>Product Category:</strong> {{ product.product_category }}</p>
                 <p><strong>Skin Type:</strong> {{ product.skintype }}</p>
@@ -71,6 +74,7 @@
         <p>No recommendations found.</p>
     {% endif %}
 </div>
-
+</div>
+</section>
 
 {% endblock %}

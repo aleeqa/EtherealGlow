@@ -14,6 +14,10 @@ views = Blueprint("views", __name__)
 def home():
     return render_template("home.html")
 
+@views.route("/analyzer")
+def analyzer():
+    return render_template("analyzer.html")
+
 #BLOG
 @views.route("/Blog")
 @login_required 
@@ -89,20 +93,21 @@ def allowed_file(filename):
 def feedback():
     if request.method == "POST":
         product_input = request.form.get('product_input')
+        product_category = request.form.get('product_category')
         text = request.form.get('text')
         image = request.files.get('image')
 
         if image and allowed_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            feedback = Feedback(product_input=product_input, text=text, image=filename, user=current_user.id)
+            feedback = Feedback(product_input=product_input, product_category=product_category, text=text, image=filename, user=current_user.id)
 
         elif image and not allowed_file(image.filename):
             flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
             return redirect(request.url)
         
         else:
-            feedback = Feedback(product_input=product_input, text=text, user=current_user.id)
+            feedback = Feedback(product_input=product_input, product_category=product_category, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
@@ -145,6 +150,18 @@ def feedbacks(username):
     
     feedbacks = user.feedbacks
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
+
+@views.route("/productFeedbacks/<product_category>")
+@login_required
+def productFeedbacks(product_category):
+    product = Feedback.query.filter_by(product_category=product_category).first()
+
+    if not product :
+        flash ("Feedback does not exists.", category="error")
+        return redirect(url_for('views.display_feedbacks'))
+    
+    feedbacks = Feedback.query.filter_by(product_category=product_category).all()
+    return render_template("product_type_feedbacks.html",  user=current_user, feedbacks=feedbacks, product_category=product_category)
 
 
 #CREATE COMMENT
@@ -272,7 +289,7 @@ def share(skintype) :
     return render_template("skintype.html", user=current_user, posts=posts, skintype=skintype)
 
 #RECOMMENDATION
-@views.route('/recommendations', methods=['POST', 'GET'])
+'''@views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
     if request.method == 'POST':
         skintype = request.form['skintype']
@@ -283,21 +300,35 @@ def recommendations():
     else:
         recommended_products = []
 
-    return render_template('recommendation.html', suggestions=recommended_products)
+    return render_template('recommendation.html', suggestions=recommended_products)'''
 
-
-'''@views.route('/recommendations', methods=['POST', 'GET'])
+@views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
     if request.method == 'POST':
-        skintype = request.form['skintype']
-        product_category = request.form['product_category']
+        skintype = request.form['skintype'].capitalize()
+        product_category = request.form['product_category'].capitalize()
 
-        #retrieve recommended products from the database based on skin type and product category
-        recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
+        print(f"Received skintype: {skintype}, product_category: {product_category}")
+
+        try:
+            recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
+            
+            #print the query results to debug
+            print(f"Recommended Products: {recommended_products}")
+            
+            #additional debug: Print all products to ensure data is present
+            all_products = Product.query.all()
+            print(f"All Products: {all_products}")
+        except Exception as e:
+            print(f"Error retrieving products: {e}")
+            recommended_products = []
     else:
         recommended_products = []
-
-    return render_template('recommendation.html', suggestions=recommended_products)'''
+    
+    
+    all_products = Product.query.all()
+    print(f"All Products: {all_products}")
+    return render_template('recommendation.html', suggestions=recommended_products)
 
 #ai chatbox and my acccount 
 
