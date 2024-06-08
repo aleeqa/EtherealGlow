@@ -28,7 +28,7 @@ def create_app():
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    from website.models import User, Post, Feedback, Comment, Product
+    from website.models import User, Post, Feedback, Comment, Product, User_Profile
 
     create_database(app)
 

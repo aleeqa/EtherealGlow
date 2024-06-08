@@ -3,58 +3,71 @@
 {% block title %}Feedback{% endblock %} 
 
 {% block content %}
-<h1 class="title" align = "center">Leave a feedback here!</h1>
+<section class="feedbackPage" id="feedbackPage">
+    <div class="content">
+        <br><br><br><br>
+        <h3>EtherealGlow❀*̥˚</h3>
+            <span>Discover your favourite product</span>
+            <p>Want healthy looking skin? Read through the feedbacks shared and get to know the most suitable product for your skin.</p>
+            <a href="/display_feedbacks" class="btn">feedbacks</a>
+    </div>    
+</section>
 
-<form method="post" action="/feedback" enctype="multipart/form-data">
-        <div class="search-box">
-            <div class="search-row">
-                <input type="text" id="product_input" name="product_input"  placeholder="Search for a product or brand" autocomplete="off" required>
-                <button id="search-feedback-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <input type="submit" id="clear-feedback-btn" value="Clear">
+<section class="leaveFeedback" id="leaveFeedback">
+    <div class="content">
+        <span>Leave your feedback here!</span>
+            <br>
+            <br>
+        <form method="post" action="/feedback" enctype="multipart/form-data">
+            <div class="search-box">
+                <div class="search-row">
+                   <input type="text" id="product_input" name="product_input"  placeholder="Search for a product or brand" autocomplete="off" required>
+                   <button id="search-feedback-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                   <input type="submit" id="clear-feedback-btn" value="Clear">
+                </div>
             </div>
-        </div>
-        
-        <div id="feedback-results" align="center"></div>
 
-        <div class="search-box">
-            <div class="search-row">
-                <label for="product_category">Product Category:</label>
+            <div id="feedback-results" align="center"></div>
 
-            <div class="col-65">
-                <select id="product_category" name="product_category" required>
-                <option value="">Select your product...</option>
-                <option value="Cleanser">Cleanser</option>
-                <option value="Toner">Toner</option>
-                <option value="Essence">Essence</option>
-                <option value="Serum">Serum</option>
-                <option value="Moisturizer">Moisturizer</option>
-                <option value="Sunscreen">Sunscreen</option>
-                </select>
+            <div class="search-box">
+                <div class="search-row">
+                    <label for="product_category">Product Category:</label>
+
+                <div class="col-65">
+                    <select id="product_category" name="product_category" required>
+                    <option value="">Select your product...</option>
+                    <option value="Cleanser">Cleanser</option>
+                    <option value="Toner">Toner</option>
+                    <option value="Essence">Essence</option>
+                    <option value="Serum">Serum</option>
+                    <option value="Moisturizer">Moisturizer</option>
+                    <option value="Sunscreen">Sunscreen</option>
+                    </select>
+                </div>
+                </div>
             </div>
-            </div>
-        </div>
 
         
         
-        <div class="feedback-box">
-            <div class="feedback-row">
+            <div class="feedback-box">
+                <div class="feedback-row">
                     <textarea type="text" id="feedback" name="text" class="form-control" placeholder="Leave a Feedback" required></textarea>
-                    <div class="feedback-button">
-                        <input type="file" name="image" autocomplete="off" >
-                        <input type="submit" value="Submit">
-                    </div>
+                        <div class="feedback-button">
+                            <input type="file" name="image" autocomplete="off" >
+                            <input type="submit" value="Submit">
+                        </div>
+                </div>
             </div>
-        </div>
 
-</form>
+        </form>
+        <br>
 
-
-<br>
-<div align = "center">
-    <a href=/display_feedbacks><input type="submit" value="Back"></a>
-    <a href=/recommendations><input type="submit" value="Recommendation"></a>
+    <div align = "center" class="feedback-button">
+        <a href=/display_feedbacks><input type="submit" value="Back"></a>
+        <a href=/recommendations><input type="submit" value="Recommendation"></a>
+    </div>
 </div>
-
+</section>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>

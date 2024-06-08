@@ -14,6 +14,10 @@ views = Blueprint("views", __name__)
 def home():
     return render_template("home.html")
 
+@views.route("/analyzer")
+def analyzer():
+    return render_template("analyzer.html")
+
 #BLOG
 @views.route("/Blog")
 @login_required 

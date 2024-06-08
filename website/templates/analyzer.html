@@ -1,0 +1,134 @@
+{% extends "base.html" %} 
+
+{% block title %}Analyzer{% endblock %} 
+
+{% block content %}
+<section class="analyzer" id="analyzer">
+    <div class="content">
+        <br><br><br><br>
+        <h3>Explore your preferred products </h3>
+        <span>Road to healthy Skin</span>
+        <p>Exploring skincare brands is a journey of self-care, reflecting your dedication to nurturing your skin.</p>
+    </div>
+</section>
+
+<section class="productAnalyzer">
+    <div class="content">
+        <span>Discover your favourite skincare</span>
+        <br>
+        <br>
+        <div class="search-box" >
+            <div class="search-row">
+                <input type="text" id="search-input" placeholder="Search for a product or brand" autocomplete="off">
+                <button id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="submit" id="clear-btn" value="Clear">
+            </div>
+        </div>
+        
+    
+        <div id="search-results"></div>
+    
+     
+        <div id="add-product-form" style="display: none;">
+            <h3>Fill in the details</h3>
+            <form id="product-form" action="/add_product" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="product_brand">Product Brand:</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="product_brand" name="product_brand" placeholder="Product brand" required>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-25">
+                        <label for="product_name">Product Name:</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="product_name" name="product_name" placeholder="Product name" required>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-25">
+                        <label for="product_category">Product Category:</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="product_category" name="product_category" required>
+                        <option value="">Select your product...</option>
+                        <option value="Cleanser">Cleanser</option>
+                        <option value="Toner">Toner</option>
+                        <option value="Essence">Essence</option>
+                        <option value="Serum">Serum</option>
+                        <option value="Moisturizer">Moisturizer</option>
+                        <option value="Sunscreen">Sunscreen</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-25">
+                        <label for="skintype">Skin Type:</label>
+                    </div>
+                    <div class="col-75">
+                        <select id="skintype" name="skintype" required>
+                        <option value="">Select your skin type...</option>
+                        <option value="combination">Combination</option>
+                        <option value="normal">Normal</option>
+                        <option value="sensitive">Sensitive</option>
+                        <option value="oily">Oily</option>
+                        <option value="dry">Dry</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-25">
+                        <label for="product_ingredients">Product Ingredients:</label>
+                    </div>
+                    <div class="col-75">
+                        <textarea id="product_ingredients" name="product_ingredients" placeholder="Product ingredients" style="height:200px" required></textarea>
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <input type="file" name="image">
+                </div><br>
+    
+                <div>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+        
+        <br><br>
+        <span>Analyzer Tool</span>
+        <p>This tool is designed to identify products containing pore-clogging ingredients, which can exacerbate breakouts and worsen acne. Don't hesitate to try it!</p>
+
+        <div class="analyzer-box">
+            <div class="analyzer-row">
+                <form id="analyze-form" method="post" action="/analyze">
+                    <textarea type="text" id="ingredients" name="ingredients" placeholder="Enter product ingredients"></textarea>
+                    <div class="analyzer-button">
+                        <input type="submit" id="ingredients-submit-button" value="Check">
+                        <input type="submit" id="ingredients-clear-btn" value="Clear">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <br><br>
+        <span style="font-size: 2.5rem;">Skincare Analysis Result:</span>
+            <div id="analyzer-result"></div>
+    </div>       
+
+</section>
+</div>    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="{{ url_for('static', filename='script.js') }}"></script>    
+
+{% endblock %}
