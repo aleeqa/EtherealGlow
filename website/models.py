@@ -28,6 +28,7 @@ class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     product_input = db.Column(db.Integer, db.ForeignKey('product.product_name', ondelete="CASCADE"), nullable=False)
+    product_category = db.Column(db.Text, nullable=False)
     text = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(150))  
     date_created = db.Column(db.DateTime(timezone=True), default=func.now()) 
@@ -50,3 +51,10 @@ class Product(db.Model) :
     skintype = db.Column(db.Text, nullable=False)  
     product_feedback = db.relationship('Feedback', backref='product', passive_deletes=True)
 
+class User_Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(150), nullable=False)
+    last_name = db.Column(db.String(150), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    phone = db.Column(db.String(20), nullable=True)
+    bio = db.Column(db.Text, nullable=True)

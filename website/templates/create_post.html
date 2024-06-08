@@ -3,27 +3,49 @@
 {% block title %}EtherealGlow{% endblock %} 
 
 {% block content%}
-<h1 class="title" align = "center">Share your skin-journey here!</h1>
+<section class="blogPage" id="blogPage">
+    <div class="content">
+        <br><br><br><br>
+        <h3>EtherealGlow❀*̥˚</h3>
+            <span>Makeup is art. Beauty is spirit.</span>
+            <p>Seeking a dose of positivity and support? Dive into our blog posts for a boost of good vibes and encouragement!</p>
+            <a href="/Blog" class="btn">blog posts</a>
+    </div>    
+</section>
 
-<form method ="POST">
-    <textarea name="text" id="text" class="form-control"></textarea>
-    <br />
-    <h3>Select your skin type : </h3>
-    <div class="radio-group" name="skintype">
-        <label><input type="radio" value="Oily" name="skintype"> Oily </label><br />
-        <label><input type="radio" value="Normal" name="skintype"> Normal</label><br />
-        <label><input type="radio" value="Sensitive" name="skintype"> Sensitive</label><br/>
-        <label><input type="radio" value="Combination" name="skintype"> Combination</label><br />
-        <label><input type="radio" value="Dry" name="skintype"> Dry  </label><br />
+<section class="createPost" id="createPost">
+    <div class="content">
+       <!-- <h1 class="title" align = "center">Share your skin-journey here!</h1>-->
+        <span>Share your skin-journey here!</span>
+        <br><br>
+        <form method ="POST">
+
+            <div class="feedback-box">
+                <div class="feedback-row">
+                    <textarea type="text" id="text" name="text" class="form-control" placeholder="Share your skin journey with us and inspire others on their path to radiant, healthy skin!" required></textarea>
+                </div>
+            </div>
+
+            <br />
+            <h5>Select your skin type : </h5>
+            <div class="radio-group" name="skintype">
+                <label><input type="radio" value="Oily" name="skintype"> Oily </label><br />
+                <label><input type="radio" value="Normal" name="skintype"> Normal</label><br />
+                <label><input type="radio" value="Sensitive" name="skintype"> Sensitive</label><br/>
+                <label><input type="radio" value="Combination" name="skintype"> Combination</label><br />
+                <label><input type="radio" value="Dry" name="skintype"> Dry  </label><br />
+            </div>
+            <br />
+            <div align = "center">
+                <button type="submit" class = "btn btn btn-primary">Post</button>
+            </div>
+            <br />
+            <div align = "center">
+                <a href=/Blog><button type="button" class = "btn btn btn-primary">back</button></a>
+            </div>
+        </form>
+
     </div>
-    <br />
-    <div align = "center">
-        <button type="submit" class = "btn btn btn-primary">Post</button>
-    </div>
-    <br />
-    <div align = "center">
-        <a href=/Blog><button type="button" class = "btn btn btn-primary">back</button></a>
-    </div>
-</form>
+</section>        
 
 {% endblock %}

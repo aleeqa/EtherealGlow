@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app, jsonify
 from flask_login import login_required, current_user
-from .models import Post, User, Feedback, Comment, Product
+from .models import Post, User, Feedback, Comment, Product, User_Profile
 from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
@@ -13,6 +13,10 @@ views = Blueprint("views", __name__)
 @views.route("/home")
 def home():
     return render_template("home.html")
+
+@views.route("/analyzer")
+def analyzer():
+    return render_template("analyzer.html")
 
 #BLOG
 @views.route("/Blog")
@@ -89,20 +93,21 @@ def allowed_file(filename):
 def feedback():
     if request.method == "POST":
         product_input = request.form.get('product_input')
+        product_category = request.form.get('product_category')
         text = request.form.get('text')
         image = request.files.get('image')
 
         if image and allowed_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            feedback = Feedback(product_input=product_input, text=text, image=filename, user=current_user.id)
+            feedback = Feedback(product_input=product_input, product_category=product_category, text=text, image=filename, user=current_user.id)
 
         elif image and not allowed_file(image.filename):
             flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
             return redirect(request.url)
         
         else:
-            feedback = Feedback(product_input=product_input, text=text, user=current_user.id)
+            feedback = Feedback(product_input=product_input, product_category=product_category, text=text, user=current_user.id)
 
         db.session.add(feedback)
         db.session.commit()
@@ -145,6 +150,18 @@ def feedbacks(username):
     
     feedbacks = user.feedbacks
     return render_template("reviews.html", user=current_user, feedbacks=feedbacks, username=username)
+
+@views.route("/productFeedbacks/<product_category>")
+@login_required
+def productFeedbacks(product_category):
+    product = Feedback.query.filter_by(product_category=product_category).first()
+
+    if not product :
+        flash ("Feedback does not exists.", category="error")
+        return redirect(url_for('views.display_feedbacks'))
+    
+    feedbacks = Feedback.query.filter_by(product_category=product_category).all()
+    return render_template("product_type_feedbacks.html",  user=current_user, feedbacks=feedbacks, product_category=product_category)
 
 
 #CREATE COMMENT
@@ -298,3 +315,33 @@ def recommendations():
         recommended_products = []
 
     return render_template('recommendation.html', suggestions=recommended_products)'''
+
+#ai chatbox and my acccount 
+
+@views.route('/ai_chatbox')
+def ai():
+    return render_template("Ai.html")
+
+    #jasdev 
+@views.route('/profile', methods=['GET', 'POST'])
+def user_profile():
+    if request.method == 'POST':    
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        phone = request.form['phone']
+        bio = request.form['bio']
+
+        # Check if a user with this email already exists
+        existing_user = User_Profile.query.filter_by(email=email).first()
+        if existing_user:
+            flash('A user with this email already exists.', 'error')
+        else:
+            user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
+            db.session.add(user)
+            db.session.commit()
+            flash('User profile updated successfully!', 'success')
+            return redirect(url_for('views.user_profile'))
+
+    user = User.query.first()  # Get the first user for simplicity
+    return render_template('profile.html', user=user)
