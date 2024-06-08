@@ -21,7 +21,7 @@
     <!--dropdown menu for skin type-->
     <div>
         <label for="skintype">Select your skin type:</label><br />
-        <select id="skintype" name="skintype"> <!--dropdown-->
+        <select id="skintype" name="skintype" required> <!--dropdown-->
             <option value="">Select your skin type..</option>
             <option value="combination">Combination</option>
             <option value="dry">Dry</option>
@@ -34,7 +34,7 @@
     <!--dropdown menu for skincare product-->
     <div>
         <label for="product_category">Select skincare product you want:</label><br />
-        <select id="product_category" name="product_category"> <!--dropdown-->
+        <select id="product_category" name="product_category" required> <!--dropdown-->
             <option value="">Select a skincare product...</option>
             <option value="cleanser">Cleanser</option>
             <option value="toner">Toner</option>
@@ -57,9 +57,9 @@
         {% for product in suggestions %}
             <div class="product-box">
                 <h4>{{ product.product_brand }}</h4>
-                {% if product.image_url %}
+                <!-- {% if product.image_url %}
                     <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
-                {% endif %}
+                {% endif %} -->
                 <p><strong>Product Name:</strong> {{ product.product_name }}</p>
                 <p><strong>Product Category:</strong> {{ product.product_category }}</p>
                 <p><strong>Skin Type:</strong> {{ product.skintype }}</p>
