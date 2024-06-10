@@ -289,19 +289,6 @@ def share(skintype) :
     return render_template("skintype.html", user=current_user, posts=posts, skintype=skintype)
 
 #RECOMMENDATION
-'''@views.route('/recommendations', methods=['POST', 'GET'])
-def recommendations():
-    if request.method == 'POST':
-        skintype = request.form['skintype']
-        product_category = request.form['product_category']
-
-        #retrieve recommended products from the database based on skintype and product_category
-        recommended_products = Product.query.filter(skintype==skintype, product_category==product_category).all()
-    else:
-        recommended_products = []
-
-    return render_template('recommendation.html', suggestions=recommended_products)'''
-
 @views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
     if request.method == 'POST':
@@ -331,7 +318,6 @@ def recommendations():
     return render_template('recommendation.html', suggestions=recommended_products)
 
 #ai chatbox and my acccount 
-
 @views.route('/ai_chatbox')
 def ai():
     return render_template("Ai.html")
