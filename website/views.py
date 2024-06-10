@@ -292,32 +292,32 @@ def share(skintype) :
 @views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
     if request.method == 'POST':
-        skintype = request.form['skintype']
-        product_category = request.form['product_category']
+        skintype = request.form['skintype'].capitalize()
+        product_category = request.form['product_category'].capitalize()
 
-        #retrieve recommended products from the database based on skintype and product_category
-        recommended_products = Product.query.filter(skintype==skintype, product_category==product_category).all()
+        print(f"Received skintype: {skintype}, product_category: {product_category}")
+
+        try:
+            recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
+            
+            #print the query results to debug
+            print(f"Recommended Products: {recommended_products}")
+            
+            #additional debug: Print all products to ensure data is present
+            all_products = Product.query.all()
+            print(f"All Products: {all_products}")
+        except Exception as e:
+            print(f"Error retrieving products: {e}")
+            recommended_products = []
     else:
         recommended_products = []
-
+    
+    
+    all_products = Product.query.all()
+    print(f"All Products: {all_products}")
     return render_template('recommendation.html', suggestions=recommended_products)
 
-
-'''@views.route('/recommendations', methods=['POST', 'GET'])
-def recommendations():
-    if request.method == 'POST':
-        skintype = request.form['skintype']
-        product_category = request.form['product_category']
-
-        #retrieve recommended products from the database based on skin type and product category
-        recommended_products = Product.query.filter_by(skintype=skintype, product_category=product_category).all()
-    else:
-        recommended_products = []
-
-    return render_template('recommendation.html', suggestions=recommended_products)'''
-
 #ai chatbox and my acccount 
-
 @views.route('/ai_chatbox')
 def ai():
     return render_template("Ai.html")
