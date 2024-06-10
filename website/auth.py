@@ -60,3 +60,10 @@ def logout():
     logout_user()
     flash("Logged out successfully!", category='success')
     return redirect(url_for("views.home"))
+
+@auth.route("Logout Account")
+@login_required
+def logoutaccount():
+    logout_user()
+    flash("Logged out successfully!", category='success')
+    return redirect(url_for("views.home"))

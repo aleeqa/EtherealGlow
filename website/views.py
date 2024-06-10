@@ -5,6 +5,8 @@ from . import db
 from analyze import analyzer_tool
 from werkzeug.utils import secure_filename
 import os
+import logging
+from flask import Flask 
 
 views = Blueprint("views", __name__)
 
@@ -339,7 +341,7 @@ def ai():
     #jasdev 
 @views.route('/profile', methods=['GET', 'POST'])
 def user_profile():
-    if request.method == 'POST':    
+    if request.method == 'POST':
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
@@ -349,13 +351,24 @@ def user_profile():
         # Check if a user with this email already exists
         existing_user = User_Profile.query.filter_by(email=email).first()
         if existing_user:
-            flash('A user with this email already exists.', 'error')
+            # Update the existing user profile
+            existing_user.first_name = first_name
+            existing_user.last_name = last_name
+            existing_user.phone = phone
+            existing_user.bio = bio
+            db.session.commit()
+            flash('User profile updated successfully!', 'success')
         else:
+            # Create a new user profile
             user = User_Profile(first_name=first_name, last_name=last_name, email=email, phone=phone, bio=bio)
             db.session.add(user)
             db.session.commit()
-            flash('User profile updated successfully!', 'success')
-            return redirect(url_for('views.user_profile'))
+            flash('User profile created successfully!', 'success')
+
+        return redirect(url_for('views.user_profile'))
 
     user = User.query.first()  # Get the first user for simplicity
     return render_template('profile.html', user=user)
+
+#search bar blog 
+
