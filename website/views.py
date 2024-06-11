@@ -366,7 +366,7 @@ def search_posts():
     for result in results:
         post_info = {
             'id': result.id,
-            'header': result.text[:30], 
+            'header': result.text[:30],  
             'body': result.text
         }
         search_results.append(post_info)
