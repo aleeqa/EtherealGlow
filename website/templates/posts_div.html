@@ -101,19 +101,64 @@
   </div>
 
     
-    <div class="search-wrapper">
-      <label for="search">Search Users</label>
-      <input type="search" id="search" data-search>
-    </div>
-    <div class="user-cards" data-user-cards-container></div>
-    <template data-user-template>
-      <div class="card">
-        <div class="header" data-header></div>
-        <div class="body" data-body></div>
-      </div>
-    </template>
 
-  
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blog</title>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.querySelector('[data-search]');
+                const userCardsContainer = document.querySelector('[data-user-cards-container]');
+                const userTemplate = document.querySelector('[data-user-template]');
+    
+                searchInput.addEventListener('input', function(e) {
+                    const value = e.target.value.toLowerCase();
+    
+                    fetch(`/search_posts?q=${value}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            userCardsContainer.innerHTML = '';
+                            data.forEach(user => {
+                                const card = userTemplate.content.cloneNode(true).children[0];
+                                const header = card.querySelector('[data-header]');
+                                const body = card.querySelector('[data-body]');
+    
+                                const link = document.createElement('a');
+                                link.href = `/post/${user.id}`;
+                                link.textContent = user.header;
+    
+                                header.innerHTML = '';
+                                header.appendChild(link);
+                                body.textContent = user.body;
+                                userCardsContainer.append(card);
+                            });
+                        });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="search-wrapper">
+            <label for="search">Search Post</label>
+            <input type="search" id="search" data-search>
+        </div>
+        <div class="user-cards" data-user-cards-container></div>
+        <template data-user-template>
+            <div class="card">
+                <div class="header" data-header></div>
+                <div class="body" data-body></div>
+            </div>
+        </template>
+    
+    
+        {% for post in posts %}
+            <div class="card">
+                <div class="header"><a href="/post/{{ post.id }}">{{ post.text[:30] }}</a></div>
+                <div class="body">{{ post.text }}</div>
+            </div>
+        {% endfor %}
+    </body>
 
     {% endblock %}
   </div>    
