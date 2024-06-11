@@ -370,5 +370,43 @@ def user_profile():
     user = User.query.first()  # Get the first user for simplicity
     return render_template('profile.html', user=user)
 
-#search bar blog 
+#search bar (blog) 
+# @views.route('/search_posts', methods=['GET'])
+# def search_posts():
+#     query = request.args.get('q', '')
+#     results = Post.query.filter(Post.text.ilike(f'%{query}%')).all()
+#     search_results = []
 
+#     for result in results:
+#         post_info = {
+#             'header': result.text[:30],  # or use another field for the header
+#             'body': result.text
+#         }
+#         search_results.append(post_info)
+
+#     return jsonify(search_results)
+
+@views.route('/search_posts', methods=['GET'])
+def search_posts():
+    query = request.args.get('q', '')
+    results = Post.query.filter(Post.text.ilike(f'%{query}%')).all()
+    search_results = []
+
+    for result in results:
+        post_info = {
+            'id': result.id,
+            'header': result.text[:30],  # or use another field for the header
+            'body': result.text
+        }
+        search_results.append(post_info)
+
+    return jsonify(search_results)
+
+@views.route('/post/<int:post_id>')
+def view_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('view-post.html', post=post)
+
+@views.route("/About_Us")
+def aboutUs():
+    return render_template("aboutus.html")
