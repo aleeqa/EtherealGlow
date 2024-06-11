@@ -58,3 +58,4 @@ class User_Profile(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     bio = db.Column(db.Text, nullable=True)
+

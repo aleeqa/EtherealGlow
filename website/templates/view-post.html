@@ -1,0 +1,10 @@
+{% extends "base.html" %} 
+
+{% block title %}EtherealGlow{% endblock %} 
+
+{% block content%}
+    <h1>{{ post.text }}</h1>
+    <p>Posted by user {{ post.author }}</p>
+    <p>Skin Type: {{ post.skintype }}</p>
+    <!-- Add other post details here -->
+{% endblock %}

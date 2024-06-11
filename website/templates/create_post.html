@@ -27,13 +27,20 @@
             </div>
 
             <br />
-            <h5>Select your skin type : </h5>
-            <div class="radio-group" name="skintype">
-                <label><input type="radio" value="Oily" name="skintype"> Oily </label><br />
-                <label><input type="radio" value="Normal" name="skintype"> Normal</label><br />
-                <label><input type="radio" value="Sensitive" name="skintype"> Sensitive</label><br/>
-                <label><input type="radio" value="Combination" name="skintype"> Combination</label><br />
-                <label><input type="radio" value="Dry" name="skintype"> Dry  </label><br />
+            <div class="row">
+                <div class="col-25">
+                    <label for="skintype">Skin Type:</label>
+                </div>
+                <div class="col-75">
+                    <select id="skintype" name="skintype" required>
+                    <option value="">Select your skin type...</option>
+                    <option value="Combination">Combination</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Sensitive">Sensitive</option>
+                    <option value="Oily">Oily</option>
+                    <option value="Dry">Dry</option>
+                    </select>
+                </div>
             </div>
             <br />
             <div align = "center">
