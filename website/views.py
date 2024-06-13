@@ -292,7 +292,7 @@ def share(skintype) :
 @views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
     if request.method == 'POST':
-        skintype = request.form['skintype'].capitalize()
+        skintype = request.form['skintype']
         product_category = request.form['product_category'].capitalize()
 
         print(f"Received skintype: {skintype}, product_category: {product_category}")
@@ -304,8 +304,8 @@ def recommendations():
             print(f"Recommended Products: {recommended_products}")
             
             #additional debug: Print all products to ensure data is present
-            all_products = Product.query.all()
-            print(f"All Products: {all_products}")
+            #all_products = Product.query.all()
+            #print(f"All Products: {all_products}")
         except Exception as e:
             print(f"Error retrieving products: {e}")
             recommended_products = []
@@ -316,6 +316,8 @@ def recommendations():
     all_products = Product.query.all()
     print(f"All Products: {all_products}")
     return render_template('recommendation.html', suggestions=recommended_products)
+
+
 
 #ai chatbox and my acccount 
 @views.route('/ai_chatbox')
