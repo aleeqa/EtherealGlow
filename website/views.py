@@ -14,7 +14,7 @@ views = Blueprint("views", __name__)
 @views.route("/")
 @views.route("/home")
 def home():
-    return render_template("home.html")
+    return render_template("directory.html")
 
 @views.route("/analyzer")
 def analyzer():
@@ -275,7 +275,11 @@ def add_product():
     db.session.add(product)
     db.session.commit()
     flash('A new product was successfully saved into the database!', category='success')
-    return redirect(url_for('views.home'))   
+    return redirect(url_for('views.analyzer'))   
+
+@views.route("/aboutUs")
+def about():
+    return render_template("AboutUs.html")
  
 #SKINTYPE
 @views.route("/share/<skintype>")
@@ -294,7 +298,7 @@ def share(skintype) :
 @views.route('/recommendations', methods=['POST', 'GET'])
 def recommendations():
     if request.method == 'POST':
-        skintype = request.form['skintype'].capitalize()
+        skintype = request.form['skintype']
         product_category = request.form['product_category'].capitalize()
 
         print(f"Received skintype: {skintype}, product_category: {product_category}")
@@ -377,8 +381,3 @@ def search_posts():
 def view_post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('view-post.html', post=post)
-
-#abot us 
-@views.route("/About_Us")
-def aboutUs():
-    return render_template("aboutus.html")

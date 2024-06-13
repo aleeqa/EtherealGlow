@@ -3,8 +3,13 @@
 {% block title %}EtherealGlow{% endblock %} 
 
 {% block content%}
-    <h1>{{ post.text }}</h1>
-    <p>Posted by user {{ post.author }}</p>
-    <p>Skin Type: {{ post.skintype }}</p>
-    <!-- Add other post details here -->
+<section class="postView">
+    <div class="content">
+        <p>{{ post.text }}</p>
+        <span>Posted by user {{ post.author }}</span><br>
+        <span>Skin Type: {{ post.skintype }}</span>
+        <!-- Add other post details here -->
+    </div>
+</section>
+  
 {% endblock %}

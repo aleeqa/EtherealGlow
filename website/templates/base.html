@@ -25,10 +25,9 @@
 
             <nav class="navbar">
                 <a href="/Blog">blog</a>
-                
                 <a href="/display_feedbacks">feedbacks</a>
-                <a href="/ai_chatbox">assistance</a>
-                
+                <a href="/analyzer">analyzer</a>
+                <a href="/recommendations">recommendations</a>
             </nav>
 
             <div class="icons">
@@ -45,42 +44,11 @@
                         {% endif %}
                     </ul>
 
-                <a href="#" class="fa-solid fa-circle-question"></a>
+                <a href="/ai_chatbox" class="fa-solid fa-circle-question"></a>
             </div>
 
         </header>
-
-        <!--
-        <div class="header"><h2>EtherealGlow ❀*̥˚</h2></div>
-        <input type="checkbox" class="toggle-Sidebar" id="toggle-Sidebar">
-        <label for="toggle-Sidebar" class="toggle-icon">
-            <div class="bar-top"></div>
-            <div class="bar-center"></div>
-            <div class="bar-bottom"></div>
-        </label>
-
         
-        <div class="sidebar">
-            <ul class="menu">
-                <li><a href="/home">Home</a></li> 
-                <li><a href="/Blog">Blog</a></li>
-                <li><a href="/display_feedbacks">View Feedbacks</a></li>
-                {% if user and user.is_authenticated %}            
-                    <li><a href="/feedback">Leave a Feedback</a></li>
-                    <li><a href="/Logout">Logout</a></li>
-                    <li><a href="/profile">My Profile</a></li>
-                {% else %}
-                    <li><a href="/Login">Login</a></li>
-                    <li><a href="/Signup">Sign Up</a></li>
-                {% endif %}
-                <li><a href="/ai_chatbox">Need Assistance</a></li>
-                <li><a href="/admin">Admin</a></li>
-                <li><a href="/aboutus">About Us</a></li>
-            </ul>
-        </div>
-        -->
-        
-
         <div class="flash">
         {% with messages = get_flashed_messages(with_categories = True) %}
             {% if messages %}
@@ -124,9 +92,9 @@
                     <a href="/feedback">leave a feedback</a>
                     <a href="/profile">profile</a>
                     <a href="/ai_chatbox">assistance</a>
-                    <a href="/About_Us">about us</a>
+                    <a href="/aboutUs">about us</a>
                 </div> 
-
+                <!---
                 <div class="box">   
                     <h3>locations</h3>
                     <a href="#">Malaysia</a>
@@ -135,7 +103,7 @@
                     <a href="#">Thailand</a>
                     <a href="#">China</a>
                 </div>
-
+                --> 
             </div>
 
             <div class="credit"> created by <span> etherealglow ❀*̥˚ </span> | all rights reserved </div>
