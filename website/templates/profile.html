@@ -3,12 +3,13 @@
 
 {% block content%}
 <section class="profile" id="profile">
-    <div class="content">
-<div>
+<div class="content">
+
     <div class="container">
+
         <div class="profile">
             <div class="profile-header">
-                <img src="{{ url_for('static', filename='profile_image.png') }}" width="600" height="300" alt="profile" class="profile-img" />
+               =
                 <div class="profile-text-container">
                     <h1 class="profile-title">{{ user.first_name if user else "First Name" }}</h1>
                     <p class="profile-email">{{ user.email if user else "Email" }}</p>
@@ -17,9 +18,7 @@
 
             <div class="menu">
                 <a href="#" class="menu-link"><i class="fa-solid fa-circle-user menu-icon"></i>Account</a>
-                <a href="#" class="menu-link"><i class="fa-solid fa-bell menu-icon"></i>Notification</a>
-                <a href="#" class="menu-link"><i class="fa-solid fa-gear menu-icon"></i>Setting</a>
-                <a href="#" class="menu-link"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
+                <a href="Logout" class="menu-link"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout Account</a>
             </div>
         </div>
 
@@ -61,7 +60,6 @@
             </div>
         </form>
     </div>
-</div>
 </div>
 </section>
 {% endblock %}
