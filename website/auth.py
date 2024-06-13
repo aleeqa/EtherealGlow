@@ -17,7 +17,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user, remember=True)
             flash("Welcome back radiant skin seekers!", category='success')
-            return redirect(url_for('views.blog'))
+            return redirect(url_for('views.home'))
         else:
             flash('Password is incorrect.', category='error')
 
@@ -49,7 +49,7 @@ def sign_up():
             db.session.commit()
             login_user(new_user, remember=True)
             flash('User created successfully!', category='success')
-            return redirect(url_for('views.blog'))
+            return redirect(url_for('views.home'))
 
     return render_template("signup.html", user=current_user)
 
@@ -60,3 +60,12 @@ def logout():
     logout_user()
     flash("Logged out successfully!", category='success')
     return redirect(url_for("views.home"))
+
+@auth.route("Logout Account")
+@login_required
+def logoutaccount():
+    logout_user()
+    flash("Logged out successfully!", category='success')
+    return redirect(url_for("views.home"))
+
+    
