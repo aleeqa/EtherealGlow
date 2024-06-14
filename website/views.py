@@ -263,7 +263,7 @@ def add_product():
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
         image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, user=user_id)
+        product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, image=filename, skintype=skintype, user=user_id)
 
     elif image and not allowed_file(image.filename):
         flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
@@ -310,8 +310,8 @@ def recommendations():
             print(f"Recommended Products: {recommended_products}")
             
             #additional debug: Print all products to ensure data is present
-            all_products = Product.query.all()
-            print(f"All Products: {all_products}")
+            #all_products = Product.query.all()
+            #print(f"All Products: {all_products}")
         except Exception as e:
             print(f"Error retrieving products: {e}")
             recommended_products = []
