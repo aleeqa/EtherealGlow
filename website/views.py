@@ -37,6 +37,7 @@ def create_post():
 
         if text and skintype:
             post = Post(text=text, skintype=skintype, author=current_user.id)
+            #add into database
             db.session.add(post)
             db.session.commit()
             flash('Post created!', category='success')
@@ -50,7 +51,7 @@ def create_post():
 @views.route("/delete-post/<int:id>")
 @login_required
 def delete_post(id):
-    post = Post.query.get(id)  #use get() instead of filter_by(id=id).first() for simplicity
+    post = Post.query.get(id)  
 
     if not post:
         flash("Post does not exist.", category='error')
@@ -60,7 +61,7 @@ def delete_post(id):
         db.session.delete(post)
         db.session.commit()
         flash('Post deleted!', category='success')
-        return redirect(url_for("views.blog"))  #return after successfully deleting the post
+        return redirect(url_for("views.blog"))  #returning page after successfully deleting the post
 
     return redirect(url_for("views.blog")) 
 
@@ -259,7 +260,8 @@ def add_product():
         user_id = current_user.id
     else:
         user_id = None
-
+    
+    #if user upload image
     if image and allowed_file(image.filename):
         filename = secure_filename(image.filename)
         image.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
@@ -269,6 +271,7 @@ def add_product():
         flash('Invalid file type. Allowed types are: pdf, png, jpg, jpeg', category='error')     
         return redirect(request.url)
     
+    #if user does not upload image
     else:
         product = Product(product_name=product_name, product_brand=product_brand, product_category=product_category, product_ingredients=product_ingredients, user=user_id, skintype=skintype)
     
@@ -277,6 +280,7 @@ def add_product():
     flash('A new product was successfully saved into the database!', category='success')
     return redirect(url_for('views.analyzer'))   
 
+#ABOUT US
 @views.route("/aboutUs")
 def about():
     return render_template("AboutUs.html")
@@ -311,6 +315,7 @@ def recommendations():
             
             #additional debug: Print all products to ensure data is present
             #all_products = Product.query.all()
+
             #print(f"All Products: {all_products}")
         except Exception as e:
             print(f"Error retrieving products: {e}")
@@ -330,7 +335,7 @@ def recommendations():
 def ai():
     return render_template("Ai.html")
 
-    #jasdev 
+ #jasdev 
 @views.route('/profile', methods=['GET', 'POST'])
 def user_profile():
     if request.method == 'POST':
