@@ -5,7 +5,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
-auth = Blueprint("auth", __name__)  # Fix: Passing the name explicitly
+auth = Blueprint("auth", __name__)  
 
 @auth.route("/Login", methods=['GET', 'POST'])
 def login():
@@ -43,7 +43,8 @@ def sign_up():
         elif len(email) < 4 or '@' not in email or '.' not in email:
             flash("Invalid email.", category='error')
         else:
-            hashed_password = bcrypt.generate_password_hash(password1).decode('utf-8')
+            #enhance security of the password (hash password)
+            hashed_password = bcrypt.generate_password_hash(password1).decode('utf-8') 
             new_user = User(email=email, username=username, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
