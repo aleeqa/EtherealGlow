@@ -316,7 +316,7 @@ def recommendations():
             #additional debug: Print all products to ensure data is present
             #all_products = Product.query.all()
 
-            #print(f"All Products: {all_products}")
+            ##print(f"All Products: {all_products}")
         except Exception as e:
             print(f"Error retrieving products: {e}")
             recommended_products = []
